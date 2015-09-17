@@ -195,7 +195,8 @@
 					$count = count($scripts);
 					for($j=0; $j<$count; $j++){
 						$s = $scripts[$j];
-						if($s->innertext){
+                        $src = $s->src;
+						if($s->innertext || strpos($src, "addthis.com") !== false){
 							$this->scripts_detected[] = $s->innertext;
 							if (Page::strpos_array($s->innertext, $this->auto_script_tags) !== false) {
 								$class = $s->class;
@@ -204,7 +205,6 @@
 								$this->scripts_converted[] = $s->innertext;								
 							}
 						}else{
-							$src = $s->src;
 							if($src){
 								$this->scripts_inline_detected[] = $src;
 								if (Page::strpos_array($src, $this->auto_script_tags) !== false) {
