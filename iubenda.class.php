@@ -195,8 +195,7 @@
 					$count = count($scripts);
 					for($j=0; $j<$count; $j++){
 						$s = $scripts[$j];
-                        $src = $s->src;
-						if($s->innertext || strpos($src, "addthis.com") !== false){
+						if($s->innertext){
 							$this->scripts_detected[] = $s->innertext;
 							if (Page::strpos_array($s->innertext, $this->auto_script_tags) !== false) {
 								$class = $s->class;
@@ -205,11 +204,15 @@
 								$this->scripts_converted[] = $s->innertext;								
 							}
 						}else{
+						    $src = $s->src;
 							if($src){
 								$this->scripts_inline_detected[] = $src;
 								if (Page::strpos_array($src, $this->auto_script_tags) !== false) {
 									$class = $s->class;
-									$s->class = $class . ' _iub_cs_activate-inline';
+									
+									strpos($src, "addthis.com") !== false ? $s->class = $class . ' _iub_cs_activate' : $s->class = $class . ' _iub_cs_activate-inline';
+									
+									
 									$s->type = 'text/plain';
 									$this->scripts_inline_converted[] = $src;
 								}
