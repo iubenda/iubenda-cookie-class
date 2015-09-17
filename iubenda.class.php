@@ -11,7 +11,9 @@
 			'connect.facebook.net',
 			'www.youtube.com/iframe_api',
 			'pagead2.googlesyndication.com/pagead/show_ads.js',
-			'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+			'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+            'sharethis.com/button/buttons.js',
+            'addthis.com/js/250/addthis_widget.js'
 		);
 
 		public $auto_iframe_tags = array(
