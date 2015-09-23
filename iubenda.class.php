@@ -49,41 +49,24 @@
 		print iubenda banner, parameter: the script code of iubenda to print the banner
 		*/
 		public function print_banner($banner){	
-			return $banner.="
+			return $banner.= "\n
 				<script>
-					(function(){
-					
-						function extendObj() {
-						  for (var i = 1; i < arguments.length; i++)
-						  for (var key in arguments[i])
-						  if (arguments[i].hasOwnProperty(key))
-						  arguments[0][key] = arguments[i][key];
-						  return arguments[0];
-						}
-
-
-						var userCallback, extend;
-						
-						if(typeof(_iub.csConfiguration.callback) !== 'undefined'){
-							userCallback = _iub.csConfiguration.callback.onConsentGiven || function(){};
-						}else{
-							userCallback = function(){};
-						}
-		
-						extend = {
-						  callback: {
-						    onConsentGiven: function(){
-							  userCallback();
-							  jQuery('noscript._no_script_iub').each(function(a,b){
-								var el = jQuery(b);
-								el.after(el.html());
-							  });
-							}
-						  }
-					    };
-					    			
-						extendObj(_iub.csConfiguration, extend);
-					})();
+					        var iCallback = function(){};
+ 
+if('callback' in _iub.csConfiguration) {
+        if('onConsentGiven' in _iub.csConfiguration.callback) iCallback = _iub.csConfiguration.callback.onConsentGiven;
+        
+        _iub.csConfiguration.callback.onConsentGiven = function()
+        {
+                iCallback();
+         
+                /*
+                 * Separator
+                */
+         
+                jQuery('noscript._no_script_iub').each(function (a, b) { var el = jQuery(b); el.after(el.html()); });
+        };
+};
 				</script>";
 		}
 			
@@ -91,10 +74,7 @@
 		Static, detect bot & crawler
 		*/
 		static function bot_detected() {
-		  if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
-		    return true;
-		  }
-		    return false;
+            return (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']));
 		}
 
 		/*
@@ -201,7 +181,7 @@
 								$class = $s->class;
 								$s->class = $class . ' _iub_cs_activate-inline';
 								$s->type = 'text/plain';
-								$this->scripts_converted[] = $s->innertext;								
+								$this->scripts_converted[] = $s->innertext;				
 							}
 						}else{
 						    $src = $s->src;
@@ -209,17 +189,64 @@
 								$this->scripts_inline_detected[] = $src;
 								if (Page::strpos_array($src, $this->auto_script_tags) !== false) {
 									$class = $s->class;
-									
 									$s->class = $class . ' _iub_cs_activate';
-									
-									
 									$s->type = 'text/plain';
+
+									/*
+									 * AdSense check by Peste Vasile Alexandru
+									*/
+
+									if(strpos($src, "pagead2.googlesyndication.com/pagead/show_ads.js")) {
+										$s->outertext = "";
+
+										continue;
+									}
+
+									/* */
+
 									$this->scripts_inline_converted[] = $src;
 								}
 							}
 						}
 					}
 				}
+
+				/*
+				 * AdSense check by Peste Vasile Alexandru
+				*/
+
+				while(preg_match("#<script(.*?)>(.*?)google_ad_client(.*?)=(.*?);(.*?)</script>#is", $html))
+				{
+					$google_ad_client;
+					$google_ad_slot;
+					$google_ad_width;
+					$google_ad_height;
+
+					/* */
+
+					preg_match("#<script(.*?)>(.*?)google_ad_client(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_client);
+					preg_match("#<script(.*?)>(.*?)google_ad_slot(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_slot);
+					preg_match("#<script(.*?)>(.*?)google_ad_width(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_width);
+					preg_match("#<script(.*?)>(.*?)google_ad_height(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_height);
+
+					/* */
+
+					$google_settings = '
+						<div style="width: '.$google_ad_width[4].'px;height:'.$google_ad_height[4].'px;" class="_iub_cs_activate_google_ads"
+						    data-client='.$google_ad_client[4].'
+							data-slot='.$google_ad_slot[4].'
+							data-width='.$google_ad_width[4].'
+							data-height='.$google_ad_height[4].'>
+						</div>
+					';
+
+					/* */
+
+					$html = preg_replace("#".$google_ad_client[0]."#is", $google_settings, $html, 1);
+				}
+
+				/* */
+
 				$this->content_page = $html;
 			}
 		}
