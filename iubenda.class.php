@@ -242,7 +242,7 @@ if('callback' in _iub.csConfiguration) {
 
 					/* */
 
-					$html = preg_replace("/".$google_ad_client[0]."/is", $google_settings, $html, 1);
+					$html = str_replace($google_ad_client[0], $google_settings, $html);
 				}
 
 				/* */
