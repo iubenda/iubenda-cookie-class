@@ -191,19 +191,6 @@ if('callback' in _iub.csConfiguration) {
 									$class = $s->class;
 									$s->class = $class . ' _iub_cs_activate';
 									$s->type = 'text/plain';
-
-									/*
-									 * AdSense check by Peste Vasile Alexandru
-									*/
-
-									if(strpos($src, "pagead2.googlesyndication.com/pagead/show_ads.js")) {
-										$s->outertext = "";
-
-										continue;
-									}
-
-									/* */
-
 									$this->scripts_inline_converted[] = $src;
 								}
 							}
@@ -243,6 +230,7 @@ if('callback' in _iub.csConfiguration) {
 					/* */
 
 					$html = preg_replace("#<script(.*?)>(.*?)google_ad_client(.*?)=(.*?);(.*?)</script>#is", $google_settings, $html, 1);
+					$html = preg_replace("#<script(.*?)pagead2.googlesyndication.com/pagead/show_ads.js(.*?)</script>#is", null, $html, 1);
 				}
 
 				/* */
