@@ -199,42 +199,59 @@ if('callback' in _iub.csConfiguration) {
 				}
 
 				/*
-				 * AdSense check by Peste Vasile Alexandru
+				 * AdSense check by Peste Vasile Alexandru, AdSense here
 				*/
-
-				while(preg_match("#<script(.*?)>(.*?)google_ad_client(.*?)=(.*?);(.*?)</script>#is", $html))
+				
+				while(preg_match("#google_ad_client =(.*?);#i", $html))
 				{
-					$google_ad_client;
-					$google_ad_slot;
-					$google_ad_width;
-					$google_ad_height;
-
-					/* */
-
-					preg_match("#<script(.*?)>(.*?)google_ad_client(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_client);
-					preg_match("#<script(.*?)>(.*?)google_ad_slot(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_slot);
-					preg_match("#<script(.*?)>(.*?)google_ad_width(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_width);
-					preg_match("#<script(.*?)>(.*?)google_ad_height(.*?)=(.*?);(.*?)</script>#is", $html, $google_ad_height);
-
-					/* */
-
-					$google_settings = '
-						<div style="width: '.$google_ad_width[4].'px;height:'.$google_ad_height[4].'px;" class="_iub_cs_activate_google_ads"
-						    data-client='.$google_ad_client[4].'
-							data-slot='.$google_ad_slot[4].'
-							data-width='.$google_ad_width[4].'
-							data-height='.$google_ad_height[4].'>
-						</div>
-					';
-
-					/* */
-
-					$html = preg_replace("#<script(.*?)>(.*?)google_ad_client(.*?)=(.*?);(.*?)</script>#is", $google_settings, $html, 1);
-					$html = preg_replace("#<script(.*?)>(.*?)pagead2.googlesyndication.com/pagead/show_ads.js(.*?)</script>#i", null, $html, 1);
+				    $ad_client = null;
+				    $ad_slot = null;
+				    $ad_width = null;
+				    $ad_height = null;
+				    $ad_block = null;
+				    
+				    /**/
+				    
+				    preg_match("#google_ad_client =(.*?);#i", $html, $ad_client);
+				    preg_match("#google_ad_slot =(.*?);#i", $html, $ad_slot);
+				    preg_match("#google_ad_width =(.*?);#i", $html, $ad_width);
+				    preg_match("#google_ad_height =(.*?);#i", $html, $ad_height);
+				    
+				    /**/
+				    
+				    $html = preg_replace("#google_ad_client =(.*?);#i", "", $html, 1);
+				    $html = preg_replace("#google_ad_slot =(.*?);#i", "", $html, 1);
+				    $html = preg_replace("#google_ad_width =(.*?);#i", "", $html, 1);
+				    $html = preg_replace("#google_ad_height =(.*?);#i", "", $html, 1);
+				    
+				    /**/
+				    
+				    $ad_client = trim($ad_client[1]);
+				    $ad_slot = trim($ad_slot[1]);
+				    $ad_width = trim($ad_width[1]);
+				    $ad_height = trim($ad_height[1]);
+				    
+				    /**/
+				    
+			        $ad_class = 'class="_iub_cs_activate_google_ads"';
+			        $ad_style = 'style="width:'.$ad_width.'px; height:'.$ad_height.'px;"';
+			        
+			        $ad_client = 'data-client='.$ad_client;
+			        $ad_slot = 'data-slot='.$ad_slot;
+			        $ad_width = 'data-width="'.$ad_width.'"';
+			        $ad_height = 'data-height="'.$ad_height.'"';
+			        
+			        /**/
+			        
+			        $ad_block = "<div $ad_style $ad_class $ad_width $ad_height $ad_slot $ad_client></div>";
+				    
+				    /**/
+				    
+				    $html = preg_replace('#(<[^>]+) src="//pagead2.googlesyndication.com/pagead/show_ads.js"(.*?)</script>#i', $ad_block, $html, 1);
 				}
-
+				
 				/* */
-
+				
 				$this->content_page = $html;
 			}
 		}
