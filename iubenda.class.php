@@ -202,8 +202,11 @@ if('callback' in _iub.csConfiguration) {
 				 * AdSense check by Peste Vasile Alexandru, AdSense here
 				*/
 				
+				$ad_found = false;
+				
 				while(preg_match("#google_ad_client =(.*?);#i", $html))
 				{
+				    $ad_found = true;
 				    $ad_client = null;
 				    $ad_slot = null;
 				    $ad_width = null;
@@ -250,7 +253,58 @@ if('callback' in _iub.csConfiguration) {
 				    $html = preg_replace('#(<[^>]+) src="//pagead2.googlesyndication.com/pagead/show_ads.js"(.*?)</script>#i', $ad_block, $html, 1);
 				}
 				
-				/* */
+				/**/
+				
+				if($ad_found)
+				{
+				    $adSense_script =
+				    "
+				        <script>
+				            function iubenda_adsense_unblock(){
+                        var t = 1;
+                        jQuery('._iub_cs_activate_google_ads').each(function() {
+                            var banner = jQuery(this);
+                            setTimeout(function(){
+                                var client = banner.data('client');
+                                var slot = banner.data('slot');
+                                var width = banner.data('width');
+                                var height = banner.data('height');
+                                var adsense_script = '<scr'+'ipt>'
+                                        + 'google_ad_client = ".chr(34)."'+client+'".chr(34).";'
+                                        + 'google_ad_slot = '+slot+';'
+                                        + 'google_ad_width = '+width+';'
+                                        + 'google_ad_height = '+height+';'
+                                        + '</scr'+'ipt>';
+                                var script = document.createElement('script');
+                                var ads = document.createElement('ads');
+                                var w = document.write;
+                                script.setAttribute('type', 'text/javascript');
+                                script.setAttribute('src', 'http://pagead2.googlesyndication.com/pagead/show_ads.js');
+                                document.write = (function(params) {
+                                    ads.innerHTML = params;
+                                    document.write = w;
+                                });
+                                banner.html(adsense_script).append(ads).append(script);
+                            }, t);
+                            t += 300;
+                        });
+                    }
+				            if('callback' in _iub.csConfiguration) {
+				                _iub.csConfiguration.callback.onConsentGiven = iubenda_adsense_unblock;
+				            }
+				            else
+				            {
+				                _iub.csConfiguration.callback = {};
+				                
+				                _iub.csConfiguration.callback.onConsentGiven = iubenda_adsense_unblock;
+				            }
+				        </script>
+				    ";
+				    
+				    $html = str_replace("</body>", "$adSense_script</body>", $html);
+				}
+				
+				/**/
 				
 				$this->content_page = $html;
 			}
