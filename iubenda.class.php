@@ -2,7 +2,7 @@
 
 	class Page {
 	
-		const IUB_REGEX_PATTERN = '/<!--IUB_COOKIE_POLICY_START-->(.*)<!--IUB_COOKIE_POLICY_END-->/sU';
+		const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/sU';
 	
 		public $auto_script_tags = array(
 			'platform.twitter.com/widgets.js',
