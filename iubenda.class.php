@@ -1,5 +1,13 @@
 <?php
 
+	/*
+	 *
+	 * iubenda.class.php
+	 *
+	 * Version: 1.0.0.0
+	 *
+	*/
+
 	class Page {
 	
 		const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/sU';
