@@ -1153,13 +1153,7 @@ class simple_html_dom
 		$this->original_size = $this->size;
 
 		//before we save the string as the doc...  strip out the \r \n's if we are told to.
-		if ($stripRN) {
-			$str = str_replace("\r", " ", $str);
-			$str = str_replace("\n", " ", $str);
-
-			// set the length of content since we have changed it.
-			$this->size = strlen($str);
-		}
+		$stripRN = false;
 
 		$this->doc = $str;
 		$this->pos = 0;
