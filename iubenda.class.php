@@ -4,7 +4,7 @@
 	 *
 	 * iubenda.class.php
 	 *
-	 * Version: 1.0.0.0
+	 * Version: 1.0.0.1
 	 *
 	*/
 
@@ -18,7 +18,6 @@
 			'apis.google.com/js/platform.js',
 			'connect.facebook.net',
 			'www.youtube.com/iframe_api',
-			'pagead2.googlesyndication.com/pagead/show_ads.js',
 			'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
             'sharethis.com/button/buttons.js',
             'addthis.com/js/'
@@ -265,7 +264,7 @@ if('callback' in _iub.csConfiguration) {
 				
 				if($ad_found)
 				{
-				    $adSense_script =
+				    $adsense_callback =
 				    "
 				        <script>
 				            function iubenda_adsense_unblock(){
@@ -309,7 +308,7 @@ if('callback' in _iub.csConfiguration) {
 				        </script>
 				    ";
 				    
-				    $html = str_replace("</body>", "$adSense_script</body>", $html);
+				    $html = str_replace("</body>", $adsense_callback."</body>", $html);
 				}
 				
 				/**/
