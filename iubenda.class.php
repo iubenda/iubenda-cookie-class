@@ -346,10 +346,16 @@ if('callback' in _iub.csConfiguration) {
 		/*
 		Call three methods to parse the page, iubendas comment, scripts + iframe
 		*/
-		public function parse(){
-			$this->parse_iubenda_comments();
-			$this->parse_scripts();
-			$this->parse_iframe();
+		public function parse()
+		{
+			if(!defined("IUBENDA_PARSED"))
+			{
+				$this->parse_iubenda_comments();
+				$this->parse_scripts();
+				$this->parse_iframe();
+
+				define("IUBENDA_PARSED", true);
+			}
 		}
 		
 		/*
