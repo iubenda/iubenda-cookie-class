@@ -4,7 +4,7 @@
 	 *
 	 * iubenda.class.php
 	 *
-	 * Version: 1.0.0.1
+	 * Version: 1.0.0.2
 	 *
 	*/
 
@@ -141,9 +141,7 @@ if('callback' in _iub.csConfiguration) {
 						break;
 		
 						default:
-							$js.= '<noscript class="_no_script_iub">';
-							$js.= $e->outertext;
-							$js.= '</noscript>';
+							$js = $html;
 						break;
 					}	
 				}
@@ -348,14 +346,9 @@ if('callback' in _iub.csConfiguration) {
 		*/
 		public function parse()
 		{
-			if(!defined("IUBENDA_PARSED"))
-			{
-				$this->parse_iubenda_comments();
-				$this->parse_scripts();
-				$this->parse_iframe();
-
-				define("IUBENDA_PARSED", true);
-			}
+			$this->parse_iubenda_comments();
+			$this->parse_scripts();
+			$this->parse_iframe();
 		}
 		
 		/*
