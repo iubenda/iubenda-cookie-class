@@ -4,7 +4,7 @@
 	 *
 	 * iubenda.class.php
 	 *
-	 * Version: 1.0.0.3
+	 * Version: 1.0.0.4
 	 *
 	*/
 
@@ -81,7 +81,7 @@ if('callback' in _iub.csConfiguration) {
 		Static, detect bot & crawler
 		*/
 		static function bot_detected() {
-            return (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT']));
+            return (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider|google|yahoo/i', $_SERVER['HTTP_USER_AGENT']));
 		}
 
 		/*
@@ -93,6 +93,7 @@ if('callback' in _iub.csConfiguration) {
 					return true;
 				}
 			}
+			return false;
 		}
 		/*
 		Static, utility function: strpos for array
