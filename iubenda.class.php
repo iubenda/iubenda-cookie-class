@@ -1,7 +1,7 @@
 <?php
 /**
  * iubenda.class.php
- * version: 1.0.1
+ * version: 1.0.2
  * @author: Copyright 2015 iubenda
  * @license GNU/GPL
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,8 @@
 			'www.youtube.com/iframe_api',
 			'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
             'sharethis.com/button/buttons.js',
-            'addthis.com/js/'
+            'addthis.com/js/',
+            'window.adsbygoogle'
 		);
 
 		public $auto_iframe_tags = array(

@@ -2,7 +2,7 @@
 
 /**
  * iubenda.class.php
- * version: 2.0.0
+ * version: 2.0.1
  * codename: Faster
  * @author: Copyright 2015 iubenda
  * @license GNU/GPL
@@ -31,6 +31,10 @@
 		(
 			array
 			(
+				/*
+					Domains
+				*/
+				
 				"platform.twitter.com/widgets.js",
 				"apis.google.com/js/plusone.js",
 				"apis.google.com/js/platform.js",
@@ -38,7 +42,13 @@
 				"www.youtube.com/iframe_api",
 				"pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
 				"sharethis.com/button/buttons.js",
-				"addthis.com/js/"
+				"addthis.com/js/",
+				
+				/*
+					JavaScript
+				*/
+				
+				"window.adsbygoogle"
 			),
 			array
 			(
@@ -70,18 +80,20 @@
 				Check if a string is in the black list.
 			*/
 			
-			if(empty($offender) || empty($blacklist))
-			{		
+			if(empty($offender) || empty($blacklist)) {
+						
 				return false;
+				
 			}
 			
 			/**/
 			
 			foreach($blacklist as $black)
 			{
-				if(strpos($offender, $black) !== false)
-				{
+				if(strpos($offender, $black) !== false) {
+					
 					return true;
+					
 				}
 			}
 			
@@ -130,8 +142,8 @@
 				Parse the founded elements and check who is in black.
 			*/
 			
-			foreach($scripts as $script) {
-				
+			foreach($scripts as $script)
+			{	
 				$src = $script -> getAttribute("src");
 				
 				/**/
