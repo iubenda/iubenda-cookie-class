@@ -2,7 +2,7 @@
 
 /**
  * iubenda.class.php
- * version: 2.0.1
+ * version: 2.0.2
  * codename: Faster
  * @author: Copyright 2015 iubenda
  * @license GNU/GPL
@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-	class Faster
+	class iubendaFaster
 	{
 		/*
 			Variables

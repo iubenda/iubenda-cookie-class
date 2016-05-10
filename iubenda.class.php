@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-	class Page {
+	class iubendaPage {
 
 		const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/sU';
 
@@ -44,7 +44,8 @@
 			'www.google.com/maps/embed/',
 			'player.vimeo.com/video',
 			'maps.google.it/maps',
-			'www.google.com/maps/embed'
+			'www.google.com/maps/embed',
+			'window.adsbygoogle'
 		);
 
 		public $iub_comments_detected = array();
