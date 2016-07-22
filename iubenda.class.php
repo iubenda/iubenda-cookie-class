@@ -102,7 +102,7 @@ if('callback' in _iub.csConfiguration) {
 		*/
 		static function consent_given(){
 			foreach($_COOKIE as $key => $value){
-				if(Page::strpos_array($key, array('_iub_cs-s', '_iub_cs'))){
+				if(iubendaPage::strpos_array($key, array('_iub_cs-s', '_iub_cs'))){
 					return true;
 				}
 			}
@@ -196,7 +196,7 @@ if('callback' in _iub.csConfiguration) {
 						$s = $scripts[$j];
 						if(!empty($s->innertext)){
 							$this->scripts_detected[] = $s->innertext;
-							if (Page::strpos_array($s->innertext, $this->auto_script_tags) !== false) {
+							if (iubendaPage::strpos_array($s->innertext, $this->auto_script_tags) !== false) {
 								$class = $s->class;
 								$s->class = $class . ' _iub_cs_activate-inline';
 								$s->type = 'text/plain';
@@ -206,7 +206,7 @@ if('callback' in _iub.csConfiguration) {
 						    $src = $s->src;
 							if($src){
 								$this->scripts_inline_detected[] = $src;
-								if (Page::strpos_array($src, $this->auto_script_tags) !== false) {
+								if (iubendaPage::strpos_array($src, $this->auto_script_tags) !== false) {
 									$class = $s->class;
 									$s->class = $class . ' _iub_cs_activate';
 									$s->type = 'text/plain';
@@ -341,7 +341,7 @@ if('callback' in _iub.csConfiguration) {
 						$i = $iframes[$j];
 						$src = $i->src;
 						$this->iframe_detected[] = $src;
-						if (Page::strpos_array($src, $this->auto_iframe_tags) !== false){
+						if (iubendaPage::strpos_array($src, $this->auto_iframe_tags) !== false){
 							$new_src = "//cdn.iubenda.com/cookie_solution/empty.html";
 							$class = $i->class;
 							$i->suppressedsrc = $src;
