@@ -22,7 +22,8 @@
 class iubendaPage {
 
 	// variables
-	const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/sU';
+	const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/s';
+	const IUB_REGEX_PATTERN_2 = '/<!--\s*IUB-COOKIE-BLOCK-START\s*-->(.*?)<!--\s*IUB-COOKIE-BLOCK-END\s*-->/s';
 
 	public $auto_script_tags = array(
 		'platform.twitter.com/widgets.js',
@@ -183,20 +184,22 @@ if('callback' in _iub.csConfiguration) {
 	 * Parse all IUBENDAs comment and convert the code inside with create_tags method
 	 */
 	public function parse_iubenda_comments() {
-		preg_match_all( self::IUB_REGEX_PATTERN, $this->content_page, $scripts );
-		
-		if ( is_array( $scripts[1] ) ) {
-			$count = count( $scripts[1] );
-			$js_scripts = array();
-			for ( $j = 0; $j < $count; $j ++  ) {
-				$this->iub_comments_detected[] = $scripts[1][$j];
-				$html = str_get_html( $scripts[1][$j], $lowercase = true, $forceTagsClosed = true, $stripRN = false );
-				$js_scripts[] = $this->create_tags( $html );
-			}
+		foreach ( array( 'IUB_REGEX_PATTERN', 'IUB_REGEX_PATTERN_2' ) as $pattern ) {
+			preg_match_all( constant( 'self::' . $pattern ), $this->content_page, $scripts );
 
-			if ( is_array( $scripts[1] ) && is_array( $js_scripts ) ) {
-				if ( count( $scripts[1] ) >= 1 && count( $js_scripts ) >= 1 ) {
-					$this->content_page = strtr( $this->content_page, array_combine( $scripts[1], $js_scripts ) );
+			if ( is_array( $scripts[1] ) ) {
+				$count = count( $scripts[1] );
+				$js_scripts = array();
+				for ( $j = 0; $j < $count; $j ++  ) {
+					$this->iub_comments_detected[] = $scripts[1][$j];
+					$html = str_get_html( $scripts[1][$j], $lowercase = true, $forceTagsClosed = true, $stripRN = false );
+					$js_scripts[] = $this->create_tags( $html );
+				}
+
+				if ( is_array( $scripts[1] ) && is_array( $js_scripts ) ) {
+					if ( count( $scripts[1] ) >= 1 && count( $js_scripts ) >= 1 ) {
+						$this->content_page = strtr( $this->content_page, array_combine( $scripts[1], $js_scripts ) );
+					}
 				}
 			}
 		}

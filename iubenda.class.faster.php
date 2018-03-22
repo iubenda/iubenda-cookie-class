@@ -23,7 +23,8 @@
 class iubendaFaster {
 	
 	// variables
-	const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/sU';
+	const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/s';
+	const IUB_REGEX_PATTERN_2 = '/<!--\s*IUB-COOKIE-BLOCK-START\s*-->(.*?)<!--\s*IUB-COOKIE-BLOCK-END\s*-->/s';
 
 	public $iub_comments_detected = array();
 	private $getBlack = array(
@@ -151,26 +152,28 @@ class iubendaFaster {
 	 * @return mixed
 	 */
 	public function parse_iubenda_comments( $content ) {
-		preg_match_all( self::IUB_REGEX_PATTERN, $content, $scripts );
+		foreach ( array( 'IUB_REGEX_PATTERN', 'IUB_REGEX_PATTERN_2' ) as $pattern ) {
+			preg_match_all( constant( 'self::' . $pattern ), $content, $scripts );
 
-		// found any content?
-		if ( is_array( $scripts[1] ) ) {
-			$count = count( $scripts[1] );
-			$js_scripts = array();
+			// found any content?
+			if ( is_array( $scripts[1] ) ) {
+				$count = count( $scripts[1] );
+				$js_scripts = array();
 
-			for ( $j = 0; $j < $count; $j ++ ) {
-				// keep it for testing
-				$this->iub_comments_detected[] = $scripts[1][$j];
+				for ( $j = 0; $j < $count; $j ++ ) {
+					// keep it for testing
+					$this->iub_comments_detected[] = $scripts[1][$j];
 
-				// get HTML dom from string
-				$html = str_get_html( $scripts[1][$j], true, true, false );
+					// get HTML dom from string
+					$html = str_get_html( $scripts[1][$j], true, true, false );
 
-				// convert scripts, iframes and other code inside IUBENDAs comment in text/plain to not generate cookies
-				$js_scripts[] = $this->create_tags( $html );
+					// convert scripts, iframes and other code inside IUBENDAs comment in text/plain to not generate cookies
+					$js_scripts[] = $this->create_tags( $html );
+				}
+
+				if ( is_array( $js_scripts ) && $count >= 1 && count( $js_scripts ) >= 1 )
+					$content = strtr( $content, array_combine( $scripts[1], $js_scripts ) );
 			}
-
-			if ( is_array( $js_scripts ) && $count >= 1 && count( $js_scripts ) >= 1 )
-				$content = strtr( $content, array_combine( $scripts[1], $js_scripts ) );
 		}
 
 		return $content;
