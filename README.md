@@ -38,7 +38,7 @@ It also allows the manual blocking of all other resources without direct interve
 * * *
 Here is an example of the PHP class integration:
 
-```
+```php
 <?php
     function iubenda_system( $html ) {
         if ( ! function_exists( "file_get_html" ) ) {
@@ -80,8 +80,3 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 * [Full Cookie Solution Documentation](https://www.iubenda.com/en/help/1205-technical-documentation-for-the-cookie-law-solution-banner-cookie-policy-and-consent-management)
 * [Prior Blocking Guide](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies) 
 * [Cookie Solution Feature Overview](https://www.iubenda.com/en/features#cookie-solution)
-
-
-
-
-
