@@ -3,6 +3,7 @@
  * iubenda.class.php
  * version: 2.0.3
  * codename: Faster
+ * @deprecated
  * @author: Copyright 2018 iubenda
  * @license GNU/GPL
  * This program is free software: you can redistribute it and/or modify

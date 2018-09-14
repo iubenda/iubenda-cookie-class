@@ -1,4 +1,5 @@
 <?php
+
 /**
  * usage.php
  * @author: Copyright 2018 iubenda
@@ -16,25 +17,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 // the "$html" parameter must contain the content of the web page with the iubenda JavaScript banner/policy included
 
-function iubenda_system( $html ) {
+function iubenda_system( $html, $type = 'page' ) {
 	if ( empty( $html ) )
 		return;
 
-	// separator
-	if ( ! function_exists( "file_get_html" ) ) {
-		require_once("simple_html_dom.php");
-	}
-
-	require_once("iubenda.class.php");
+	require_once( 'iubenda.class.php' );
 
 	// separator
-	if ( ! Page::consent_given() && ! Page::bot_detected() ) {
-		$page = new Page( $html );
-		$page->parse();
-		$html = $page->get_converted_page();
+	if ( ! iubendaParser::consent_given() && ! iubendaParser::bot_detected() ) {
+		$iubenda = new iubendaParser( $html, array( 'type' => in_array( $type, array( 'page', 'faster' ), true ) ? $type : 'page' ) );
+		$html = $iubenda->parse();
 	}
 
 	// finished
@@ -45,6 +39,6 @@ function iubenda_system( $html ) {
  *
  * Example:
  *
- * echo iubenda_system("<html> ...content... </html>");
+ * echo iubenda_system( "<html> ...content... </html>", 'faster' );
  *
  */

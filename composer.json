@@ -1,0 +1,11 @@
+{
+    "name": "iubenda/iubenda-cookie-class",
+    "type": "project",
+    "description": "PHP class for the cookie law solution",
+    "keywords": ["cookie","gdpr"],
+    "homepage": "https://github.com/iubenda/iubenda-cookie-class",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.2.4"
+    }
+}
