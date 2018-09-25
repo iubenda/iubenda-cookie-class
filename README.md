@@ -1,9 +1,6 @@
 # Read Me 
 
-
-
 [![GitHub release](https://img.shields.io/github/release/iubenda/iubenda-cookie-class.svg)](https://github.com/iubenda/iubenda-cookie-class/releases/tag/2.0.3)
-
 
 ***PHP class for the iubenda cookie law solution***
  
@@ -56,8 +53,6 @@ function iubenda_system( $html, $type = 'page' ) {
 }
 ```
 
-
-
 The `iubenda_system` method verifies if the page visitor consents to the use of cookies. If they have consented, the script returns the HTML provided as a parameter without taking any action such as parsing/replacing.
 Simply copy your method into the PHP document and then call it with the following syntax `iubenda_system("contenutohtml");` that will return the code.
 
@@ -69,18 +64,16 @@ These operations take place in accordance with the rules explained in [this guid
 
 As a last step the script invokes the `get_converted_page()` of the Page object and returns the page modified in such a way that no cookie will be generated. 
 
-
 ## Additional Help and docs
 
 * [Full Cookie Solution Documentation](https://www.iubenda.com/en/help/1205-technical-documentation-for-the-cookie-law-solution-banner-cookie-policy-and-consent-management)
 * [Prior Blocking Guide](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies) 
 * [Cookie Solution Feature Overview](https://www.iubenda.com/en/features#cookie-solution)
 
-
 ## Changelog
 
-##### 1.0.0
-* Initial rewrite release
+##### 3.0.0
+* Tweak: Update and unify iubenda parsing engine
 
 ### License
 
