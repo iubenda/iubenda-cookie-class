@@ -75,3 +75,13 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 * [Full Cookie Solution Documentation](https://www.iubenda.com/en/help/1205-technical-documentation-for-the-cookie-law-solution-banner-cookie-policy-and-consent-management)
 * [Prior Blocking Guide](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies) 
 * [Cookie Solution Feature Overview](https://www.iubenda.com/en/features#cookie-solution)
+
+
+## Changelog
+
+##### 1.0.0
+* Initial rewrite release
+
+### License
+
+This project is licensed under the GPl 3 license.
