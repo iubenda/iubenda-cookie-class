@@ -72,6 +72,9 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 
 ## Changelog
 
+##### 3.1.0
+* Tweak: Update and extend the list of blocked scripts
+
 ##### 3.0.0
 * Tweak: Update and unify iubenda parsing engine
 

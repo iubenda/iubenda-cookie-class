@@ -1,7 +1,7 @@
 <?php
 /**
  * iubenda.class.php
- * version: 3.0.0
+ * version: 3.1.0
  * @author: Copyright 2018 iubenda
  * @license GNU/GPL
  * This program is free software: you can redistribute it and/or modify
@@ -26,28 +26,70 @@ class iubendaParser {
 
 	// scripts
 	public $auto_script_tags = array(
-		'platform.twitter.com/widgets.js',
+		// google
 		'apis.google.com/js/plusone.js',
 		'apis.google.com/js/platform.js',
-		'connect.facebook.net',
+		'googlesyndication.com/pagead/js/adsbygoogle.js',
+		'googlesyndication.com/pagead/show_ads.js',
+		'googleadservices.com/pagead/conversion.js',
+		'google.com/recaptcha/',
 		'www.youtube.com/iframe_api',
-		'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+		'window.adsbygoogle',
+		// twitter
+		'platform.twitter.com/widgets.js',
+		// facebook
+		'connect.facebook.net',
+		// sharethis
 		'sharethis.com/button/buttons.js',
+		// addthis
 		'addthis.com/js/',
-		'window.adsbygoogle'
+		// disqus
+		'disqus.com/embed.js',
+		// scorecardresearch
+		'scorecardresearch.com/beacon.js',
+		// neodata
+		'neodatagroup.com',
+		// criteo
+		'static.criteo.net/js/',
+		// adagio
+		'adagionet.com/uploads/js/sipra.js',
+		// rainbowtgx
+		'cdn-wx.rainbowtgx.com/rtgx.js',
+		// pinterest
+		'pinterest.com/js/pinit.js',
+		// linkpulse
+		'lp4.io',
+		// optimizely
+		'cdn.optimizely.com/js/',
+		// getsatisfaction
+		'loader.engage.gsfn.us/loader.js',
+		// outbrain
+		'outbrain.js',
+		// headway
+		'headwayapp.co/widget.js',
+		// codepen
+		'codepen.io',
+		// freshchat
+		'wchat.freshchat.com'
 	);
 
 	// iframes
 	public $auto_iframe_tags = array(
+		// google
 		'youtube.com',
-		'platform.twitter.com',
-		'www.facebook.com/plugins/like.php',
-		'www.facebook.com/plugins/likebox.php',
 		'apis.google.com',
-		'player.vimeo.com/video',
 		'maps.google.it/maps',
 		'www.google.com/maps/embed',
-		'window.adsbygoogle'
+		'window.adsbygoogle',
+		// twitter
+		'platform.twitter.com',
+		// facebook
+		'www.facebook.com/plugins/like.php',
+		'www.facebook.com/plugins/likebox.php',
+		// vimeo
+		'player.vimeo.com',
+		// 4w
+		'4wnet.com'
 	);
 
 	private $type = 'page';
