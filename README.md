@@ -22,14 +22,24 @@ This class works with the iubenda Cookie Law Solution and allows you to block th
 
 The class is currently able to detect and automatically block the following scripts:
 
-* Facebook widgets
-* Twitter widgets
-* Google+ widgets
+* Google Analytics
 * Google AdSense
-* YouTube widgets
+* Google+ widgets
+* Twitter widgets
+* Facebook widgets
+* YouTube
 * Vimeo
-* AddThis widgets
 * ShareThis widgets
+* AddThis widgets
+* Pinterest widgets
+* Disqus
+* Optimizely
+* Neodata
+* Criteo
+* Outbrain
+* Headway
+* Codepen
+* Freshchat
 
 It also allows the manual blocking of all other resources without direct intervention on the actual scripts. Read more about the [prior blocking functionality here](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies).
 * * *
@@ -73,7 +83,7 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 ## Changelog
 
 ##### 3.1.0
-* Tweak: Update and extend the list of blocked scripts
+* Tweak: Update and extend the list of blocked scripts including Pinterest, AddThis, Disqus, Optimizely, Neodata, Criteo, Outbrain, Headway and Codepen
 
 ##### 3.0.0
 * Tweak: Update and unify iubenda parsing engine
