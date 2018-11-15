@@ -24,9 +24,11 @@ The class is currently able to detect and automatically block the following scri
 
 * Google Analytics
 * Google AdSense
+* Google ReCaptcha
 * Google+ widgets
 * Twitter widgets
 * Facebook widgets
+* Facebook Comments
 * YouTube
 * Vimeo
 * ShareThis widgets
