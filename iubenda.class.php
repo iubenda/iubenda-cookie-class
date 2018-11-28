@@ -28,6 +28,7 @@ class iubendaParser {
 	public $auto_script_tags = array(
 		// google
 		'apis.google.com/js/plusone.js',
+		'apis.google.com/js/client/plusone.js',
 		'apis.google.com/js/platform.js',
 		'googlesyndication.com/pagead/js/adsbygoogle.js',
 		'googlesyndication.com/pagead/show_ads.js',
@@ -37,6 +38,7 @@ class iubendaParser {
 		'window.adsbygoogle',
 		// twitter
 		'platform.twitter.com/widgets.js',
+		'static.ads-twitter.com',
 		// facebook
 		'connect.facebook.net',
 		// sharethis
@@ -70,7 +72,31 @@ class iubendaParser {
 		// codepen
 		'codepen.io',
 		// freshchat
-		'wchat.freshchat.com'
+		'wchat.freshchat.com',
+		// uservoice
+		'widget.uservoice.com',
+		'UserVoice.push',
+		// addroll
+		's.adroll.com',
+		// improvely
+		'iljmp.com/improvely.js',
+		// olark
+		'static.olark.com/jsclient/loader0.js',
+		// cxense
+		'scdn.cxense.com',
+		// segment
+		'cdn.segment.io/analytics.js',
+		'cdn.segment.com/analytics.js',
+		// kissmetrics
+		'i.kissmetrics.com/i.js',
+		// mixpanel
+		'cdn.mxpnl.com',
+		// pingdom
+		'rum-static.pingdom.net/prum.min.js',
+		// bing
+		'bat.bing.com',
+		// elev
+		'cdn.elev.io'
 	);
 
 	// iframes
