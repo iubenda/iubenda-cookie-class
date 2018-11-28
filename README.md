@@ -1,7 +1,5 @@
 # Read Me 
 
-[![GitHub release](https://img.shields.io/github/release/iubenda/iubenda-cookie-class.svg)](https://github.com/iubenda/iubenda-cookie-class/releases/tag/2.0.3)
-
 ***PHP class for the iubenda cookie law solution***
  
 If you have European users you need to obtain and manage consent for the use of most cookies. 
@@ -43,24 +41,21 @@ The class is currently able to detect and automatically block the following scri
 * Codepen
 * Freshchat
 * Uservoice
-
-* AddRoll
-* Improvely
-
+* AdRoll
 * Olark
 * Segment
 * Kissmetrics
-* 
-Mixpanel
+* Mixpanel
 * Pingdom
 * Bing
+* Elevio
 
-* Elev
 
 It also allows the manual blocking of all other resources without direct intervention on the actual scripts. Read more about the [prior blocking functionality here](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies).
-* * *
-Here is an example of the PHP class integration:
 
+* * *
+
+Here is an example of the PHP class integration:
 ```php
 function iubenda_system( $html, $type = 'page' ) {
 	if ( empty( $html ) )
@@ -100,8 +95,7 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 
 ##### 3.1.0
 * Tweak: Update and extend the list of blocked scripts including Pinterest, AddThis, Disqus, Optimizely, Neodata, Criteo, Outbrain, Headway, Codepen, Freshchat, Uservoice
-, AddRoll, Improvely, Olark, Segment, Kissmetrics, 
-Mixpanel, Pingdom, Bing and Elev
+, AdRoll, Olark, Segment, Kissmetrics, Mixpanel, Pingdom, Bing and Elevio
 
 ##### 3.0.0
 * Tweak: Update and unify iubenda parsing engine

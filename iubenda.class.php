@@ -76,10 +76,8 @@ class iubendaParser {
 		// uservoice
 		'widget.uservoice.com',
 		'UserVoice.push',
-		// addroll
+		// adroll
 		's.adroll.com',
-		// improvely
-		'iljmp.com/improvely.js',
 		// olark
 		'static.olark.com/jsclient/loader0.js',
 		// cxense
@@ -95,7 +93,7 @@ class iubendaParser {
 		'rum-static.pingdom.net/prum.min.js',
 		// bing
 		'bat.bing.com',
-		// elev
+		// elevio
 		'cdn.elev.io'
 	);
 
