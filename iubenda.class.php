@@ -30,6 +30,8 @@ class iubendaParser {
 		'apis.google.com/js/plusone.js',
 		'apis.google.com/js/client/plusone.js',
 		'apis.google.com/js/platform.js',
+		'apis.google.com/js/api.js', // oauth
+		'cse.google.com/cse.js', // site search
 		'googlesyndication.com/pagead/js/adsbygoogle.js',
 		'googlesyndication.com/pagead/show_ads.js',
 		'googleadservices.com/pagead/conversion.js',
@@ -47,6 +49,8 @@ class iubendaParser {
 		'addthis.com/js/',
 		// disqus
 		'disqus.com/embed.js',
+		// linkedin
+		'platform.linkedin.com/in.js',
 		// scorecardresearch
 		'scorecardresearch.com/beacon.js',
 		// neodata
@@ -94,7 +98,10 @@ class iubendaParser {
 		// bing
 		'bat.bing.com',
 		// elevio
-		'cdn.elev.io'
+		'cdn.elev.io',
+		// paypal
+		'paypalobjects.com/js/external/api.js', // paypal login
+		'paypalobjects.com/api/checkout.js', // paypal checkout
 	);
 
 	// iframes

@@ -23,15 +23,19 @@ The class is currently able to detect and automatically block the following scri
 * Google Analytics
 * Google AdSense
 * Google ReCaptcha
+* Google Site Search
+* Google oAuth
 * Google+ widgets
 * Twitter widgets
 * Facebook widgets
 * Facebook Comments
 * YouTube
 * Vimeo
+* Linkedin widgets
 * ShareThis widgets
 * AddThis widgets
 * Pinterest widgets
+* PayPal widgets
 * Disqus
 * Optimizely
 * Neodata
@@ -94,7 +98,7 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 ## Changelog
 
 ##### 3.1.0
-* Tweak: Update and extend the list of blocked scripts including Pinterest, AddThis, Disqus, Optimizely, Neodata, Criteo, Outbrain, Headway, Codepen, Freshchat, Uservoice
+* Tweak: Update and extend the list of blocked scripts including Google Site Search, Google oAuth, Linkedin widgets, PayPal widgets, Pinterest, AddThis, Disqus, Optimizely, Neodata, Criteo, Outbrain, Headway, Codepen, Freshchat, Uservoice
 , AdRoll, Olark, Segment, Kissmetrics, Mixpanel, Pingdom, Bing and Elevio
 
 ##### 3.0.0
