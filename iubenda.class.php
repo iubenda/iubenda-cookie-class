@@ -35,6 +35,7 @@ class iubendaParser {
 		'googlesyndication.com/pagead/js/adsbygoogle.js',
 		'googlesyndication.com/pagead/show_ads.js',
 		'googleadservices.com/pagead/conversion.js',
+		'googletagmanager.com/gtm.js',
 		'google.com/recaptcha/',
 		'www.youtube.com/iframe_api',
 		'window.adsbygoogle',
@@ -43,6 +44,8 @@ class iubendaParser {
 		'static.ads-twitter.com',
 		// facebook
 		'connect.facebook.net',
+		// instagram
+		'instawidget.net/js/instawidget.js',
 		// sharethis
 		'sharethis.com/button/buttons.js',
 		// addthis
@@ -107,11 +110,13 @@ class iubendaParser {
 	// iframes
 	public $auto_iframe_tags = array(
 		// google
-		'youtube.com',
 		'apis.google.com',
 		'maps.google.it/maps',
 		'www.google.com/maps/embed',
+		'googletagmanager.com/ns.html',
 		'window.adsbygoogle',
+		// youtube
+		'youtube.com',
 		// twitter
 		'platform.twitter.com',
 		// facebook

@@ -21,9 +21,11 @@ This class works with the iubenda Cookie Law Solution and allows you to block th
 The class is currently able to detect and automatically block the following scripts:
 
 * Google Analytics
+* Google Maps
 * Google AdSense
 * Google ReCaptcha
 * Google Site Search
+* Google Tag Manager
 * Google oAuth
 * Google+ widgets
 * Twitter widgets
@@ -33,6 +35,7 @@ The class is currently able to detect and automatically block the following scri
 * Vimeo
 * Linkedin widgets
 * ShareThis widgets
+* Instagram widgets
 * AddThis widgets
 * Pinterest widgets
 * PayPal widgets
