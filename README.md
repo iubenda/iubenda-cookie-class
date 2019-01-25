@@ -90,8 +90,6 @@ Simply copy your method into the PHP document and then call it with the followin
 
 These operations take place in accordance with the rules explained in [this guide](https://www.iubenda.com/en/help/posts/1229). We suggest that you consult the posts relating to the alteration of script, img and iframe tags. 
 
-As a last step the script invokes the `get_converted_page()` of the Page object and returns the page modified in such a way that no cookie will be generated. 
-
 ## Additional Help and docs
 
 * [Full Cookie Solution Documentation](https://www.iubenda.com/en/help/1205-technical-documentation-for-the-cookie-law-solution-banner-cookie-policy-and-consent-management)
@@ -99,6 +97,9 @@ As a last step the script invokes the `get_converted_page()` of the Page object 
 * [Cookie Solution Feature Overview](https://www.iubenda.com/en/features#cookie-solution)
 
 ## Changelog
+
+##### 3.1.1
+* Tweak: Update composer.json autoloader
 
 ##### 3.1.0
 * Tweak: Update and extend the list of blocked scripts including Google Site Search, Google oAuth, Linkedin widgets, PayPal widgets, Pinterest, AddThis, Disqus, Optimizely, Neodata, Criteo, Outbrain, Headway, Codepen, Freshchat, Uservoice

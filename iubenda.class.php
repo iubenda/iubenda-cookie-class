@@ -1,8 +1,8 @@
 <?php
 /**
  * iubenda.class.php
- * version: 3.1.0
- * @author: Copyright 2018 iubenda
+ * version: 3.1.1
+ * @author: Copyright 2019 iubenda
  * @license GNU/GPL
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
