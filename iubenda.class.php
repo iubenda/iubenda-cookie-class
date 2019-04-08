@@ -38,6 +38,7 @@ class iubendaParser {
 		'googletagmanager.com/gtm.js',
 		'google.com/recaptcha/',
 		'www.youtube.com/iframe_api',
+		'youtu.be',
 		'window.adsbygoogle',
 		// twitter
 		'platform.twitter.com/widgets.js',
@@ -112,6 +113,7 @@ class iubendaParser {
 		// google
 		'apis.google.com',
 		'maps.google.it/maps',
+		'maps.google.com/maps',
 		'www.google.com/maps/embed',
 		'googletagmanager.com/ns.html',
 		'window.adsbygoogle',
