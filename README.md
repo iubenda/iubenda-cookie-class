@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 3.2.0
+* New: Introducing a way to skip specific script parsing
+
 ##### 3.1.2
 * Tweak: Improved Youtube and Googla Maps support
 
