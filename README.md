@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 3.3.0
+* Tweak: Simple HTML Dom PHP class update to 1.9
+
 ##### 3.2.0
 * New: Introducing a way to skip specific script parsing
 
