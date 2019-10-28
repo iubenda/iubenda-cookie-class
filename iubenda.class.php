@@ -1,9 +1,13 @@
 <?php
 /**
  * iubenda.class.php
- * version: 3.2.0
- * @author: Copyright 2019 iubenda
+ * 
+ * @author iubenda s.r.l
+ * @copyright 2018-2019, iubenda s.r.l
  * @license GNU/GPL
+ * @version 3.4.0
+ * @deprecated
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -37,6 +41,7 @@ class iubendaParser {
 		'googlesyndication.com/pagead/show_ads.js',
 		'googleadservices.com/pagead/conversion.js',
 		'googletagmanager.com/gtm.js',
+		'www.googletagmanager.com/gtag/js',
 		'google.com/recaptcha/',
 		'www.youtube.com/iframe_api',
 		'youtu.be',
@@ -124,7 +129,9 @@ class iubendaParser {
 		'platform.twitter.com',
 		// facebook
 		'www.facebook.com/plugins/like.php',
+		'www.facebook.com/*/plugins/like.php',
 		'www.facebook.com/plugins/likebox.php',
+		'www.facebook.com/*/plugins/likebox.php',
 		// vimeo
 		'player.vimeo.com',
 		// 4w
@@ -156,12 +163,14 @@ class iubendaParser {
 	 */
 	public function __construct( $content_page = '', $args = array() ) {
 		// check scripts
-		if ( ! empty( $args['scripts'] ) && is_array( $args['scripts'] ) )
+		if ( ! empty( $args['scripts'] ) && is_array( $args['scripts'] ) ) {
 			$this->auto_script_tags = array_unique( array_merge( $this->auto_script_tags, $args['scripts'] ) );
+		}
 
 		// check iframes
-		if ( ! empty( $args['iframes'] ) && is_array( $args['iframes'] ) )
+		if ( ! empty( $args['iframes'] ) && is_array( $args['iframes'] ) ) {
 			$this->auto_iframe_tags = array_unique( array_merge( $this->auto_iframe_tags, $args['iframes'] ) );
+		}
 
 		// valid type?
 		$this->type = ! empty( $args['type'] ) && in_array( $args['type'], array( 'page', 'faster' ), true ) ? $args['type'] : 'page';
@@ -199,7 +208,7 @@ class iubendaParser {
 	}
 
 	/**
-	 * Static, utility function: strpos for array
+	 * Static, utility function: strpos for array wilth wildcard support
 	 * 
 	 * @param type $haystack
 	 * @param type $needle
@@ -208,15 +217,24 @@ class iubendaParser {
 	static function strpos_array( $haystack, $needle ) {
 		if ( empty( $haystack ) || empty( $needle ) )
 			return false;
+		
+		$needle = ! is_array( $needle ) ? array( $needle ) : $needle;
 
-		if ( is_array( $needle ) ) {
-			foreach ( $needle as $need ) {
+		foreach ( $needle as $need ) {
+			// wildcard?
+			if ( strpos( $need, '/*/' ) !== false ) {
+				// strtok - removes query string
+				// str_replace - removes double slashes // from url
+				// preg_replace - removes http or https from url
+				$haystack = strtok( str_replace( '//', '', preg_replace( "(^https?://)", "", $haystack ) ), '?' );
+			
+				if ( fnmatch( $need, $haystack ) !== false )
+					return true;
+			// regular
+			} else {		
 				if ( strpos( $haystack, $need ) !== false )
 					return true;
 			}
-		} else {
-			if ( strpos( $haystack, $need ) !== false )
-				return true;
 		}
 
 		return false;

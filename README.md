@@ -98,6 +98,12 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 3.4.0
+* New: Introducing wildcard support for scripts and iframes
+
+##### 3.3.1
+* Tweak: Improved Google Tag Manager script blocking
+
 ##### 3.3.0
 * Tweak: Simple HTML Dom PHP class update to 1.9
 

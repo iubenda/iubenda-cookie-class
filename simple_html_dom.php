@@ -19,6 +19,11 @@
  *   Antcs
  *
  * Version Rev. 1.9 (290)
+ * 
+ * @author S.C. Chen, John Schlick, Rus Carroll, logmanoriginal
+ * @copyright 2018-2019, iubenda s.r.l
+ * @license MIT License
+ * @version 1.9
  */
 
 define('HDOM_TYPE_ELEMENT', 1);
