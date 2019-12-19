@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2019, iubenda s.r.l
  * @license GNU/GPL
- * @version 3.4.0
+ * @version 4.0.0
  * @deprecated
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -27,115 +27,119 @@ class iubendaParser {
 	// variables
 	const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/s';
 	const IUB_REGEX_PATTERN_2 = '/<!--\s*IUB-COOKIE-BLOCK-START\s*-->(.*?)<!--\s*IUB-COOKIE-BLOCK-END\s*-->/s';
+	const IUB_REGEX_PURPOSE_PATTERN = '/<!--\s*IUB-COOKIE-BLOCK-START-PURPOSE-(\d+)\s*-->(.*?)<!--\s*IUB-COOKIE-BLOCK-END-PURPOSE-\d+\s*-->/s';
 	const IUB_REGEX_SKIP_PATTERN = '/<!--\s*IUB-COOKIE-BLOCK-SKIP-START\s*-->(.*?)<!--\s*IUB-COOKIE-BLOCK-SKIP-END\s*-->/s';
 
 	// scripts
-	public $auto_script_tags = array(
-		// google
-		'apis.google.com/js/plusone.js',
-		'apis.google.com/js/client/plusone.js',
-		'apis.google.com/js/platform.js',
-		'apis.google.com/js/api.js', // oauth
-		'cse.google.com/cse.js', // site search
-		'googlesyndication.com/pagead/js/adsbygoogle.js',
-		'googlesyndication.com/pagead/show_ads.js',
-		'googleadservices.com/pagead/conversion.js',
-		'googletagmanager.com/gtm.js',
-		'www.googletagmanager.com/gtag/js',
-		'google.com/recaptcha/',
-		'www.youtube.com/iframe_api',
-		'youtu.be',
-		'window.adsbygoogle',
-		// twitter
-		'platform.twitter.com/widgets.js',
-		'static.ads-twitter.com',
-		// facebook
-		'connect.facebook.net',
-		// instagram
-		'instawidget.net/js/instawidget.js',
-		// sharethis
-		'sharethis.com/button/buttons.js',
-		// addthis
-		'addthis.com/js/',
-		// disqus
-		'disqus.com/embed.js',
-		// linkedin
-		'platform.linkedin.com/in.js',
-		// scorecardresearch
-		'scorecardresearch.com/beacon.js',
-		// neodata
-		'neodatagroup.com',
-		// criteo
-		'static.criteo.net/js/',
-		// adagio
-		'adagionet.com/uploads/js/sipra.js',
-		// rainbowtgx
-		'cdn-wx.rainbowtgx.com/rtgx.js',
-		// pinterest
-		'pinterest.com/js/pinit.js',
-		// linkpulse
-		'lp4.io',
-		// optimizely
-		'cdn.optimizely.com/js/',
-		// getsatisfaction
-		'loader.engage.gsfn.us/loader.js',
-		// outbrain
-		'outbrain.js',
-		// headway
-		'headwayapp.co/widget.js',
-		// codepen
-		'codepen.io',
-		// freshchat
-		'wchat.freshchat.com',
-		// uservoice
-		'widget.uservoice.com',
-		'UserVoice.push',
-		// adroll
-		's.adroll.com',
-		// olark
-		'static.olark.com/jsclient/loader0.js',
-		// cxense
-		'scdn.cxense.com',
-		// segment
-		'cdn.segment.io/analytics.js',
-		'cdn.segment.com/analytics.js',
-		// kissmetrics
-		'i.kissmetrics.com/i.js',
-		// mixpanel
-		'cdn.mxpnl.com',
-		// pingdom
-		'rum-static.pingdom.net/prum.min.js',
-		// bing
-		'bat.bing.com',
-		// elevio
-		'cdn.elev.io',
-		// paypal
-		'paypalobjects.com/js/external/api.js', // paypal login
-		'paypalobjects.com/api/checkout.js', // paypal checkout
-	);
+	public $auto_script_tags = array();
 
 	// iframes
-	public $auto_iframe_tags = array(
-		// google
-		'apis.google.com',
-		'maps.google.it/maps',
-		'maps.google.com/maps',
-		'www.google.com/maps/embed',
-		'googletagmanager.com/ns.html',
-		'window.adsbygoogle',
-		// youtube
-		'youtube.com',
-		// twitter
-		'platform.twitter.com',
-		// facebook
-		'www.facebook.com/plugins/like.php',
-		'www.facebook.com/*/plugins/like.php',
-		'www.facebook.com/plugins/likebox.php',
-		'www.facebook.com/*/plugins/likebox.php',
-		// vimeo
-		'player.vimeo.com',
-		// 4w
-		'4wnet.com'
+	public $auto_iframe_tags = array();
+	
+	// purposes
+	public $purposes = array();
+	
+	// per-purpose scripts
+	public $script_tags = array(
+		// Strictly necessary
+		1 => array(
+			
+		),
+		// Basic interactions & functionalities
+		2 => array(
+			'apis.google.com/js/api.js',
+			'cse.google.com/cse.js',
+			'googletagmanager.com/gtm.js',
+			'loader.engage.gsfn.us/loader.js',
+			'headwayapp.co/widget.js',
+			'wchat.freshchat.com',
+			'widget.uservoice.com',
+			'UserVoice.push',
+			'static.olark.com/jsclient/loader0.js',
+			'cdn.elev.io',
+			'paypalobjects.com/js/external/api.js',
+			'paypalobjects.com/api/checkout.js',
+		),
+		// Experience enhancement
+		3 => array(
+			'apis.google.com/js/plusone.js',
+			'apis.google.com/js/client/plusone.js',
+			'apis.google.com/js/platform.js',
+			'www.youtube.com/iframe_api',
+			'youtu.be',
+			'platform.twitter.com/widgets.js',
+			'instawidget.net/js/instawidget.js',
+			'disqus.com/embed.js',
+			'platform.linkedin.com/in.js',
+			'pinterest.com/js/pinit.js',
+			'codepen.io',
+			'bat.bing.com',
+		),
+		// Analytics
+		4 => array(
+			'sharethis.com/button/buttons.js',
+			'addthis.com/js/',
+			'scorecardresearch.com/beacon.js',
+			'neodatagroup.com',
+			'lp4.io',
+			'cdn.optimizely.com/js/',
+			'cdn.segment.io/analytics.js',
+			'cdn.segment.com/analytics.js',
+			'i.kissmetrics.com/i.js',
+			'cdn.mxpnl.com',
+			'rum-static.pingdom.net/prum.min.js',
+		),
+		// Targeting & Advertising
+		5 => array(
+			'googlesyndication.com/pagead/js/adsbygoogle.js',
+			'googlesyndication.com/pagead/show_ads.js',
+			'googleadservices.com/pagead/conversion.js',
+			'www.googletagmanager.com/gtag/js',
+			'window.adsbygoogle',
+			'static.ads-twitter.com',
+			'connect.facebook.net',
+			'static.criteo.net/js/',
+			'adagionet.com/uploads/js/sipra.js',
+			'cdn-wx.rainbowtgx.com/rtgx.js',
+			'outbrain.js',
+			's.adroll.com',
+			'scdn.cxense.com',
+		),
+	);
+	
+	// per-purpose iframes
+	public $iframe_tags = array(
+		// Strictly necessary
+		1 => array(
+			
+		),
+		// Basic interactions & functionalities
+		2 => array(
+			'googletagmanager.com/ns.html',
+		),
+		// Experience enhancement
+		3 => array(
+			'apis.google.com',
+			'maps.google.it/maps',
+			'maps.google.com/maps',
+			'www.google.com/maps/embed',
+			'youtube.com',
+			'platform.twitter.com',
+			'player.vimeo.com',
+			'www.facebook.com/plugins/like.php',
+			'www.facebook.com/*/plugins/like.php',
+			'www.facebook.com/plugins/likebox.php',
+			'www.facebook.com/*/plugins/likebox.php',
+		),
+		// Analytics
+		4 => array(
+			
+		),
+		// Targeting & Advertising
+		5 => array(
+			'window.adsbygoogle',
+			'4wnet.com'
+		),
 	);
 
 	private $type = 'page';
@@ -162,26 +166,47 @@ class iubendaParser {
 	 * @param array $args
 	 */
 	public function __construct( $content_page = '', $args = array() ) {
-		// check scripts
-		if ( ! empty( $args['scripts'] ) && is_array( $args['scripts'] ) ) {
-			$this->auto_script_tags = array_unique( array_merge( $this->auto_script_tags, $args['scripts'] ) );
-		}
-
-		// check iframes
-		if ( ! empty( $args['iframes'] ) && is_array( $args['iframes'] ) ) {
-			$this->auto_iframe_tags = array_unique( array_merge( $this->auto_iframe_tags, $args['iframes'] ) );
-		}
-
 		// valid type?
 		$this->type = ! empty( $args['type'] ) && in_array( $args['type'], array( 'page', 'faster' ), true ) ? $args['type'] : 'page';
 
 		// load Simple HTML DOM if needed
-		if ( ! function_exists( 'file_get_html' ) )
+		if ( ! function_exists( 'file_get_html' ) || ! function_exists( 'str_get_html' ) )
 			require_once( dirname( __FILE__ ) . '/simple_html_dom.php' );
 
 		// set content
 		$this->original_content_page = $content_page;
 		$this->content_page = $content_page;
+		
+		// get purposes
+		$this->purposes = self::get_purposes();
+		
+		// check for additional scripts
+		if ( ! empty( $args['scripts'] ) && is_array( $args['scripts'] ) ) {
+			// array is not multidimensional, backward compatibility, so block it
+			if ( ! empty( $args['scripts'][0] ) ) {
+				$this->auto_script_tags = array_merge( $this->auto_script_tags, $args['scripts'] );
+			// array is multidimensional, assign per purpose
+			} else {
+				$this->script_tags = $this->array_merge_custom( $this->script_tags, $args['scripts'] );
+			}
+		}
+
+		// check for additional iframes
+		if ( ! empty( $args['iframes'] ) && is_array( $args['iframes'] ) ) {
+			// array is not multidimensional, backward compatibility, so assign block it
+			if ( ! empty( $args['iframes'][0] ) ) {
+				$this->auto_iframe_tags = array_merge( $this->auto_iframe_tags, $args['iframes'] );
+			// array is multidimensional, assign per purpose
+			} else {
+				$this->iframe_tags = $this->array_merge_custom( $this->iframe_tags, $args['iframes'] );
+			}
+		}
+		
+		// get script tags to block
+		$this->auto_script_tags = array_unique( self::get_script_tags() );
+		
+		// get iframes tags to block
+		$this->auto_iframe_tags = array_unique( self::get_iframe_tags() );
 	}
 
 	/**
@@ -199,45 +224,123 @@ class iubendaParser {
 	 * @return boolean
 	 */
 	static function consent_given() {
-		foreach ( $_COOKIE as $key => $value ) {
-			if ( self::strpos_array( $key, array( '_iub_cs-s', '_iub_cs' ) ) )
-				return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Static, utility function: strpos for array wilth wildcard support
-	 * 
-	 * @param type $haystack
-	 * @param type $needle
-	 * @return boolean
-	 */
-	static function strpos_array( $haystack, $needle ) {
-		if ( empty( $haystack ) || empty( $needle ) )
-			return false;
+		$consent_given = false;
 		
-		$needle = ! is_array( $needle ) ? array( $needle ) : $needle;
-
-		foreach ( $needle as $need ) {
-			// wildcard?
-			if ( strpos( $need, '/*/' ) !== false ) {
-				// strtok - removes query string
-				// str_replace - removes double slashes // from url
-				// preg_replace - removes http or https from url
-				$haystack = strtok( str_replace( '//', '', preg_replace( "(^https?://)", "", $haystack ) ), '?' );
+		foreach ( $_COOKIE as $key => $value ) {
+			$found = self::strpos_array( $key, array( '_iub_cs-s', '_iub_cs' ) );
 			
-				if ( fnmatch( $need, $haystack ) !== false )
-					return true;
-			// regular
-			} else {		
-				if ( strpos( $haystack, $need ) !== false )
-					return true;
+			if ( $found !== false ) {
+				$consent_data = json_decode( stripslashes( $value ), true );
+				
+				// read cookie value if given
+				if ( isset( $consent_data['consent'] ) && $consent_data['consent'] == true )
+					$consent_given = true;
+				
+				// read purposes if given
+				if ( ! empty( $consent_data['purposes'] ) && is_array( $consent_data['purposes'] ) ) {
+					// all purposes accepted, consent given
+					if ( ! in_array( false, $consent_data['purposes'] ) )
+						$consent_given = true;
+				}
 			}
 		}
 
-		return false;
+		return $consent_given;
+	}
+
+	/**
+	 * Get user accepted purposes.
+	 * 
+	 * @return array
+	 */
+	static function get_purposes() {
+		$purposes = array();
+		
+		if ( ! empty( $_COOKIE ) ) {
+			foreach ( $_COOKIE as $key => $value ) {
+				$found = self::strpos_array( $key, array( '_iub_cs-s', '_iub_cs' ) );
+				
+				if ( $found !== false ) {
+					$consent_data = json_decode( $value, true );
+					
+					// read purposes if given
+					if ( ! empty( $consent_data['purposes'] ) && is_array( $consent_data['purposes'] ) )	
+						$purposes = $consent_data['purposes'];
+				}
+			}
+		}
+		
+		return $purposes;
+	}
+	
+	/**
+	 * Get script tags to be blocked.
+	 * 
+	 * @return array
+	 */
+	private function get_script_tags() {
+		$tags = $this->auto_script_tags;
+		
+		foreach ( $this->script_tags as $purpose_id => $tags_list ) {
+			// empty tags list, go to another
+			if ( empty( $tags_list ) )
+				continue;
+				
+			// purposes available, filter per purpose
+			if ( ! empty( $this->purposes ) ) {
+				// don't block scripts unavailable in the user purposes
+				// if ( array_key_exists( $purpose_id, $this->purposes ) && $this->purposes[$purpose_id] == false ) {
+				
+				// block scripts unavailable in the user purposes
+				if ( ! isset( $this->purposes[$purpose_id] ) || $this->purposes[$purpose_id] == false ) {	
+					foreach ( $tags_list as $tag ) {
+						$tags[] = $tag;
+					}
+				}
+			// no purposes yet, just add all scripts
+			} else {
+				foreach ( $tags_list as $tag ) {
+					$tags[] = $tag;
+				}
+			}
+		}
+		
+		return $tags;
+	}
+	
+	/**
+	 * Get iframe tags to be blocked.
+	 * 
+	 * @return array
+	 */
+	private function get_iframe_tags() {
+		$tags = $this->auto_iframe_tags;
+		
+		foreach ( $this->iframe_tags as $purpose_id => $tags_list ) {
+			// empty tags list, go to another
+			if ( empty( $tags_list ) )
+				continue;
+				
+			// purposes available, filter per purpose
+			if ( ! empty( $this->purposes ) ) {
+				// don't block iframes unavailable in the user purposes
+				// if ( array_key_exists( $purpose_id, $this->purposes ) && $this->purposes[$purpose_id] == false ) {
+				
+				// block iframes unavailable in the user purposes
+				if ( ! isset( $this->purposes[$purpose_id] ) && $this->purposes[$purpose_id] == false ) {	
+					foreach ( $tags_list as $tag ) {
+						$tags[] = $tag;
+					}
+				}
+			// no purposes yet, just add all scripts
+			} else {
+				foreach ( $tags_list as $tag ) {
+					$tags[] = $tag;
+				}
+			}
+		}
+		
+		return $tags;
 	}
 
 	/**
@@ -246,7 +349,7 @@ class iubendaParser {
 	 * @param mixed $content
 	 * @return mixed
 	 */
-	public function create_tags( $content ) {
+	public function create_tags( $content, $args ) {
 		$elements = $content->find( "*" );
 		$js = '';
 
@@ -258,6 +361,9 @@ class iubendaParser {
 
 				switch ( $e->tag ) {
 					case 'script':
+						if ( $args['pattern'] === 'IUB_REGEX_PURPOSE_PATTERN' )
+							$e->{'data-iub-purposes'} = $args['number'];
+
 						$class = $e->class;
 						$e->class = $class . ' ' . $this->iub_class;
 						$e->type = 'text/plain';
@@ -265,6 +371,9 @@ class iubendaParser {
 						break;
 
 					case 'iframe':
+						if ( $args['pattern'] === 'IUB_REGEX_PURPOSE_PATTERN' )
+							$e->{'data-iub-purposes'} = $args['number'];
+
 						$new_src = $this->iub_empty;
 						$class = $e->class;
 						$e->suppressedsrc = $e->src;
@@ -274,7 +383,7 @@ class iubendaParser {
 						break;
 
 					default:
-						$js = $e->outertext;
+						$js .= $e->outertext;
 						break;
 				}
 			}
@@ -301,11 +410,6 @@ class iubendaParser {
 
 				switch ( $element->tag ) {
 					case 'script':
-						$class = trim( $element->class );
-						$element->class = ( $class !== '' ? $class . ' ' : '' ) . $this->iub_class_skip;
-						$js .= $element->outertext;
-						break;
-
 					case 'iframe':
 						$class = trim( $element->class );
 						$element->class = ( $class !== '' ? $class . ' ' : '' ) . $this->iub_class_skip;
@@ -331,15 +435,18 @@ class iubendaParser {
 	public function parse_scripts() {
 		switch ( $this->type ) {
 			case 'page':
-				$html = str_get_html( $this->content_page, $lowercase = true, $force_tags_closed = true, $strip = false );
+				// get page contents
+				$html = str_get_html( $this->content_page, true, true, false );
 				
 				if ( is_object( $html ) ) {
+					// get scripts
 					$scripts = $html->find( 'script' );
 
 					if ( is_array( $scripts ) ) {
 						$count = count( $scripts );
 						$class_skip = $this->iub_class_skip;
 
+						// loop through scripts
 						for ( $j = 0; $j < $count; $j ++  ) {
 							$s = $scripts[$j];
 							$script_class = trim( $s->class );
@@ -360,8 +467,10 @@ class iubendaParser {
 
 							if ( ! empty( $s->innertext ) ) {
 								$this->scripts_inline_detected[] = $s->innertext;
+								
+								$found = self::strpos_array( $s->innertext, $this->auto_script_tags );
 
-								if ( self::strpos_array( $s->innertext, $this->auto_script_tags ) !== false ) {
+								if ( $found !== false ) {
 									$class = $s->class;
 									$s->class = $class . ' ' . $this->iub_class_inline;
 									$s->type = 'text/plain';
@@ -372,11 +481,17 @@ class iubendaParser {
 
 								if ( $src ) {
 									$this->scripts_detected[] = $src;
+									
+									$found = self::strpos_array( $src, $this->auto_script_tags );
 
-									if ( self::strpos_array( $src, $this->auto_script_tags ) !== false ) {
+									if ( $found !== false ) {
 										$class = $s->class;
 										$s->class = $class . ' ' . $this->iub_class;
 										$s->type = 'text/plain';
+										
+										// add data-iub-purposes attribute
+										$s->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->script_tags );
+										
 										$this->scripts_converted[] = $src;
 									}
 								}
@@ -523,14 +638,20 @@ class iubendaParser {
 						// add inline script as detected
 						if ( ! empty( $script->nodeValue ) )
 							$this->scripts_inline_detected[] = $script->nodeValue;
+						
+						$found = self::strpos_array( $src, $script_tags );
+						$found_inline = self::strpos_array( $script->nodeValue, $script_tags );
 
-						if ( self::strpos_array( $src, $script_tags ) ) {
+						if ( $found !== false ) {
 							$script->setAttribute( 'type', 'text/plain' );
 							$script->setAttribute( 'class', $script->getAttribute( 'class' ) . ' ' . $class );
+							
+							// add data-iub-purposes attribute
+							$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
 
 							// add script as converted
 							$this->scripts_converted[] = $src;
-						} elseif ( self::strpos_array( $script->nodeValue, $script_tags ) ) {
+						} elseif ( $found_inline !== false ) {
 							$script->setAttribute( 'type', 'text/plain' );
 							$script->setAttribute( 'class', $script->getAttribute( 'class' ) . ' ' . $class_inline );
 
@@ -560,7 +681,7 @@ class iubendaParser {
 	public function parse_iframes() {
 		switch ( $this->type ) {
 			case 'page':
-				$html = str_get_html( $this->content_page, $lowercase = true, $force_tags_closed = true, $strip = false );
+				$html = str_get_html( $this->content_page, true, true, false );
 
 				if ( is_object( $html ) ) {
 					$iframes = $html->find( 'iframe' );
@@ -587,11 +708,17 @@ class iubendaParser {
 							$src = $i->src;
 							$this->iframes_detected[] = $src;
 							
-							if ( self::strpos_array( $src, $this->auto_iframe_tags ) !== false ) {
+							$found = self::strpos_array( $src, $this->auto_iframe_tags );
+							
+							if ( $found !== false ) {
 								$class = $i->class;
 								$i->suppressedsrc = $src;
 								$i->src = $this->iub_empty;
 								$i->class = $class . ' ' . $this->iub_class;
+								
+								// add data-iub-purposes attribute
+								$i->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->iframe_tags );
+									
 								$this->iframes_converted[] = $src;
 							}
 						}
@@ -642,11 +769,16 @@ class iubendaParser {
 
 						// add iframe as detected
 						$this->iframes_detected[] = $src;
+						
+						$found = self::strpos_array( $src, $iframe_tags );
 
-						if ( self::strpos_array( $src, $iframe_tags ) ) {
+						if ( $found !== false ) {
 							$iframe->setAttribute( 'src', $empty );
 							$iframe->setAttribute( 'suppressedsrc', $src );
 							$iframe->setAttribute( 'class', $iframe_class . ' ' . $class );
+							
+							// per purpose, add data-iub-purposes attribute
+							$iframe->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->iframe_tags ) );
 
 							// add iframe as converted
 							$this->iframes_converted[] = $src;
@@ -685,7 +817,7 @@ class iubendaParser {
 				// get HTML dom from string
 				$html = str_get_html( $scripts[1][$j], true, true, false );
 
-				// skip scripts and iframes inside IUBENDAs comments
+				// skip scripts and iframes inside iubenda's comments
 				$js_scripts[] = $this->skip_tags( $html );
 			}
 
@@ -696,26 +828,40 @@ class iubendaParser {
 		unset( $scripts );
 
 		// block
-		foreach ( array( 'IUB_REGEX_PATTERN', 'IUB_REGEX_PATTERN_2' ) as $pattern ) {
+		foreach ( array( 'IUB_REGEX_PATTERN', 'IUB_REGEX_PATTERN_2', 'IUB_REGEX_PURPOSE_PATTERN' ) as $pattern ) {
 			preg_match_all( constant( 'self::' . $pattern ), $this->content_page, $scripts );
 
+			$chunks = array();
+			$args = array(
+				'pattern' => $pattern
+			);
+
+			if ( $pattern === 'IUB_REGEX_PURPOSE_PATTERN' ) {
+				$numbers = $scripts[1];
+				$chunks = $scripts[2];
+			} else
+				$chunks = $scripts[1];
+
 			// found any content?
-			if ( is_array( $scripts[1] ) ) {
-				$count = count( $scripts[1] );
+			if ( is_array( $chunks ) ) {
+				$count = count( $chunks );
 				$js_scripts = array();
 
 				for ( $j = 0; $j < $count; $j++ ) {
-					$this->iub_comments_detected[] = $scripts[1][$j];
+					$this->iub_comments_detected[] = $chunks[$j];
 
 					// get HTML dom from string
-					$html = str_get_html( $scripts[1][$j], $lowercase = true, $force_tags_closed = true, $strip = false );
+					$html = str_get_html( $chunks[$j], true, true, false );
+
+					if ( $pattern === 'IUB_REGEX_PURPOSE_PATTERN' )
+						$args['number'] = $numbers[$j];
 
 					// convert scripts, iframes and other code inside IUBENDAs comment in text/plain to not generate cookies
-					$js_scripts[] = $this->create_tags( $html );
+					$js_scripts[] = $this->create_tags( $html, $args );
 				}
 
-				if ( ( is_array( $scripts[1] ) && is_array( $js_scripts ) ) && ( $count >= 1 && count( $js_scripts ) >= 1 ) )
-					$this->content_page = strtr( $this->content_page, array_combine( $scripts[1], $js_scripts ) );
+				if ( ( is_array( $chunks ) && is_array( $js_scripts ) ) && ( $count >= 1 && count( $js_scripts ) >= 1 ) )
+					$this->content_page = strtr( $this->content_page, array_combine( $chunks, $js_scripts ) );
 			}
 		}
 	}
@@ -753,16 +899,91 @@ class iubendaParser {
 			<script>
 				var iCallback = function(){};
 
-				if ('callback' in _iub.csConfiguration) {
-					if ('onConsentGiven' in _iub.csConfiguration.callback)
+				if ( 'callback' in _iub.csConfiguration ) {
+					if ( 'onConsentGiven' in _iub.csConfiguration.callback )
 						iCallback = _iub.csConfiguration.callback.onConsentGiven;
 
 					_iub.csConfiguration.callback.onConsentGiven = function() {
 						iCallback();
 
-						jQuery('noscript._no_script_iub').each(function (a, b) { var el = jQuery(b); el.after(el.html()); });
+						jQuery( 'noscript._no_script_iub' ).each( function (a, b) { var el = jQuery(b); el.after( el.html() ); } );
 					};
 				};
 			</script>";
 	}
+	
+	/**
+	 * Static, utility function: strpos for array wilth wildcard support
+	 * 
+	 * @param type $haystack
+	 * @param type $needle
+	 * @return boolean
+	 */
+	static function strpos_array( $haystack, $needle ) {
+		if ( empty( $haystack ) || empty( $needle ) )
+			return false;
+		
+		$needle = ! is_array( $needle ) ? array( $needle ) : $needle;
+
+		foreach ( $needle as $need ) {
+			// wildcard?
+			if ( strpos( $need, '/*/' ) !== false ) {
+				// strtok - removes query string
+				// str_replace - removes double slashes // from url
+				// preg_replace - removes http or https from url
+				$haystack = strtok( str_replace( '//', '', preg_replace( "(^https?://)", "", $haystack ) ), '?' );
+			
+				if ( fnmatch( $need, $haystack ) !== false )
+					return $need;
+			// regular
+			} else {		
+				if ( strpos( $haystack, $need ) !== false )
+					return $need;
+			}
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Custom array merge helper function.
+	 * 
+	 * @return array
+	 */
+	public function array_merge_custom() {
+		$args = func_get_args();
+		$ret = array_shift( $args );
+
+		foreach ( $args as $arg ) {
+			foreach ( $arg as $k => $v ) {
+				// index value is an array, add it
+				if ( is_array( $ret[(string) $k] ) )
+					$ret[(string) $k][] = $v;
+				// is not an array, replace it
+				else
+					$ret[(string) $k] = $v;
+			}
+		}
+		
+		return $ret;
+	}
+	
+	/**
+	 * Array search helper function.
+	 * 
+	 * @param type $needle
+	 * @param type $haystack
+	 * @return boolean
+	 */
+	public function recursive_array_search( $needle, $haystack ) {
+		foreach ( $haystack as $key => $value ) {
+			$current_key = $key;
+			if ( $needle === $value OR ( is_array( $value ) &&
+			$this->recursive_array_search( $needle, $value ) !== false) ) {
+				return $current_key;
+			}
+		}
+		return false;
+	}
+
 }
