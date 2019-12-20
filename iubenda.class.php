@@ -42,9 +42,7 @@ class iubendaParser {
 	// per-purpose scripts
 	public $script_tags = array(
 		// Strictly necessary
-		1 => array(
-			
-		),
+		1 => array(),
 		// Basic interactions & functionalities
 		2 => array(
 			'apis.google.com/js/api.js',
@@ -58,7 +56,7 @@ class iubendaParser {
 			'static.olark.com/jsclient/loader0.js',
 			'cdn.elev.io',
 			'paypalobjects.com/js/external/api.js',
-			'paypalobjects.com/api/checkout.js',
+			'paypalobjects.com/api/checkout.js'
 		),
 		// Experience enhancement
 		3 => array(
@@ -73,7 +71,7 @@ class iubendaParser {
 			'platform.linkedin.com/in.js',
 			'pinterest.com/js/pinit.js',
 			'codepen.io',
-			'bat.bing.com',
+			'bat.bing.com'
 		),
 		// Analytics
 		4 => array(
@@ -87,7 +85,7 @@ class iubendaParser {
 			'cdn.segment.com/analytics.js',
 			'i.kissmetrics.com/i.js',
 			'cdn.mxpnl.com',
-			'rum-static.pingdom.net/prum.min.js',
+			'rum-static.pingdom.net/prum.min.js'
 		),
 		// Targeting & Advertising
 		5 => array(
@@ -103,19 +101,17 @@ class iubendaParser {
 			'cdn-wx.rainbowtgx.com/rtgx.js',
 			'outbrain.js',
 			's.adroll.com',
-			'scdn.cxense.com',
-		),
+			'scdn.cxense.com'
+		)
 	);
 	
 	// per-purpose iframes
 	public $iframe_tags = array(
 		// Strictly necessary
-		1 => array(
-			
-		),
+		1 => array(),
 		// Basic interactions & functionalities
 		2 => array(
-			'googletagmanager.com/ns.html',
+			'googletagmanager.com/ns.html'
 		),
 		// Experience enhancement
 		3 => array(
@@ -129,17 +125,15 @@ class iubendaParser {
 			'www.facebook.com/plugins/like.php',
 			'www.facebook.com/*/plugins/like.php',
 			'www.facebook.com/plugins/likebox.php',
-			'www.facebook.com/*/plugins/likebox.php',
+			'www.facebook.com/*/plugins/likebox.php'
 		),
 		// Analytics
-		4 => array(
-			
-		),
+		4 => array(),
 		// Targeting & Advertising
 		5 => array(
 			'window.adsbygoogle',
 			'4wnet.com'
-		),
+		)
 	);
 
 	private $type = 'page';
@@ -176,17 +170,23 @@ class iubendaParser {
 		// set content
 		$this->original_content_page = $content_page;
 		$this->content_page = $content_page;
-		
+
 		// get purposes
 		$this->purposes = self::get_purposes();
-		
+
 		// check for additional scripts
 		if ( ! empty( $args['scripts'] ) && is_array( $args['scripts'] ) ) {
 			// array is not multidimensional, backward compatibility, so block it
-			if ( ! empty( $args['scripts'][0] ) ) {
+			if ( ! is_array( reset( $args['scripts'] ) ) ) {
 				$this->auto_script_tags = array_merge( $this->auto_script_tags, $args['scripts'] );
 			// array is multidimensional, assign per purpose
 			} else {
+				// block unassigned script
+				if ( array_key_exists( 0, $args['scripts'] ) ) {
+					$this->auto_script_tags = array_merge( $this->auto_script_tags, $args['scripts'][0] );
+					unset( $args['scripts'][0] );
+				}
+				
 				$this->script_tags = $this->array_merge_custom( $this->script_tags, $args['scripts'] );
 			}
 		}
@@ -194,17 +194,23 @@ class iubendaParser {
 		// check for additional iframes
 		if ( ! empty( $args['iframes'] ) && is_array( $args['iframes'] ) ) {
 			// array is not multidimensional, backward compatibility, so assign block it
-			if ( ! empty( $args['iframes'][0] ) ) {
+			if ( ! is_array( reset( $args['iframes'] ) ) ) {
 				$this->auto_iframe_tags = array_merge( $this->auto_iframe_tags, $args['iframes'] );
 			// array is multidimensional, assign per purpose
 			} else {
+				// block unassigned script
+				if ( array_key_exists( 0, $args['iframes'] ) ) {
+					$this->auto_iframe_tags = array_merge( $this->auto_iframe_tags, $args['iframes'][0] );
+					unset( $args['iframes'][0] );
+				}
+				
 				$this->iframe_tags = $this->array_merge_custom( $this->iframe_tags, $args['iframes'] );
 			}
 		}
-		
+
 		// get script tags to block
 		$this->auto_script_tags = array_unique( self::get_script_tags() );
-		
+
 		// get iframes tags to block
 		$this->auto_iframe_tags = array_unique( self::get_iframe_tags() );
 	}
@@ -950,24 +956,21 @@ class iubendaParser {
 	 * 
 	 * @return array
 	 */
-	public function array_merge_custom() {
-		$args = func_get_args();
-		$ret = array_shift( $args );
+	public function array_merge_custom( $builtin, $data ) {
+		foreach ( $data as $type => $array ) {
+			// if ( $type === 0 )
+				// continue;
 
-		foreach ( $args as $arg ) {
-			foreach ( $arg as $k => $v ) {
-				// index value is an array, add it
-				if ( is_array( $ret[(string) $k] ) )
-					$ret[(string) $k][] = $v;
-				// is not an array, replace it
-				else
-					$ret[(string) $k] = $v;
+			foreach ( $array as $block ) {
+				$builtin[$type][] = $block;
 			}
+
+			$builtin[$type] = array_unique( $builtin[$type] );
 		}
-		
-		return $ret;
+
+		return $builtin;
 	}
-	
+
 	/**
 	 * Array search helper function.
 	 * 
