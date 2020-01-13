@@ -3,9 +3,9 @@
  * iubenda.class.php
  * 
  * @author iubenda s.r.l
- * @copyright 2018-2019, iubenda s.r.l
+ * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.0.0
+ * @version 4.1.0
  * @deprecated
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -137,6 +137,7 @@ class iubendaParser {
 	);
 
 	private $type = 'page';
+	private $amp = false;
 	public $iub_comments_detected = array();
 	public $skipped_comments_detected = array();
 	public $iframes_skipped = array();
@@ -162,6 +163,9 @@ class iubendaParser {
 	public function __construct( $content_page = '', $args = array() ) {
 		// valid type?
 		$this->type = ! empty( $args['type'] ) && in_array( $args['type'], array( 'page', 'faster' ), true ) ? $args['type'] : 'page';
+		
+		// amp support>
+		$this->amp = (bool) ( isset( $args['amp'] ) && $args['amp'] === true );
 
 		// load Simple HTML DOM if needed
 		if ( ! function_exists( 'file_get_html' ) || ! function_exists( 'str_get_html' ) )
@@ -369,6 +373,10 @@ class iubendaParser {
 					case 'script':
 						if ( $args['pattern'] === 'IUB_REGEX_PURPOSE_PATTERN' )
 							$e->{'data-iub-purposes'} = $args['number'];
+						
+						// AMP support
+						if ( $this->amp )
+							$e->{'data-block-on-consent'} = '_till_accepted';
 
 						$class = $e->class;
 						$e->class = $class . ' ' . $this->iub_class;
@@ -379,6 +387,10 @@ class iubendaParser {
 					case 'iframe':
 						if ( $args['pattern'] === 'IUB_REGEX_PURPOSE_PATTERN' )
 							$e->{'data-iub-purposes'} = $args['number'];
+							
+						// AMP support
+						if ( $this->amp )
+							$e->{'data-block-on-consent'} = '_till_accepted';
 
 						$new_src = $this->iub_empty;
 						$class = $e->class;
@@ -497,6 +509,10 @@ class iubendaParser {
 										
 										// add data-iub-purposes attribute
 										$s->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->script_tags );
+										
+										// AMP support
+										if ( $this->amp )
+											$s->{'data-block-on-consent'} = '_till_accepted';
 										
 										$this->scripts_converted[] = $src;
 									}
@@ -654,12 +670,20 @@ class iubendaParser {
 							
 							// add data-iub-purposes attribute
 							$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
+							
+							// AMP support
+							if ( $this->amp )
+								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
 
 							// add script as converted
 							$this->scripts_converted[] = $src;
 						} elseif ( $found_inline !== false ) {
 							$script->setAttribute( 'type', 'text/plain' );
 							$script->setAttribute( 'class', $script->getAttribute( 'class' ) . ' ' . $class_inline );
+							
+							// AMP support
+							if ( $this->amp )
+								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
 
 							// add inline script as converted
 							$this->scripts_inline_converted[] = $script->nodeValue;
@@ -724,6 +748,10 @@ class iubendaParser {
 								
 								// add data-iub-purposes attribute
 								$i->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->iframe_tags );
+								
+								// AMP support
+								if ( $this->amp )
+									$i->{'data-block-on-consent'} = '_till_accepted';
 									
 								$this->iframes_converted[] = $src;
 							}
@@ -785,6 +813,10 @@ class iubendaParser {
 							
 							// per purpose, add data-iub-purposes attribute
 							$iframe->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->iframe_tags ) );
+							
+							// AMP support
+							if ( $this->amp )
+								$iframe->setAttribute( 'data-block-on-consent', '_till_accepted' );
 
 							// add iframe as converted
 							$this->iframes_converted[] = $src;

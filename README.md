@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.0
+* New: Google AMP support
+
 ##### 4.0.0
 * New: Per-purpose script blocking support
 * New: Reject button support
