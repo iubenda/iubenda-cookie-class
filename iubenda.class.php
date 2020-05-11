@@ -1,13 +1,13 @@
 <?php
 /**
  * iubenda.class.php
- * 
+ *
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.0
+ * @version 4.1.1
  * @deprecated
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -35,10 +35,10 @@ class iubendaParser {
 
 	// iframes
 	public $auto_iframe_tags = array();
-	
+
 	// purposes
 	public $purposes = array();
-	
+
 	// per-purpose scripts
 	public $script_tags = array(
 		// Strictly necessary
@@ -71,12 +71,12 @@ class iubendaParser {
 			'platform.linkedin.com/in.js',
 			'pinterest.com/js/pinit.js',
 			'codepen.io',
+      'addthis.com/js/',
 			'bat.bing.com'
 		),
 		// Analytics
 		4 => array(
 			'sharethis.com/button/buttons.js',
-			'addthis.com/js/',
 			'scorecardresearch.com/beacon.js',
 			'neodatagroup.com',
 			'lp4.io',
@@ -104,7 +104,7 @@ class iubendaParser {
 			'scdn.cxense.com'
 		)
 	);
-	
+
 	// per-purpose iframes
 	public $iframe_tags = array(
 		// Strictly necessary
@@ -156,14 +156,14 @@ class iubendaParser {
 
 	/**
 	 * Construct: the whole HTML output of the page
-	 * 
+	 *
 	 * @param mixed $content_page
 	 * @param array $args
 	 */
 	public function __construct( $content_page = '', $args = array() ) {
 		// valid type?
 		$this->type = ! empty( $args['type'] ) && in_array( $args['type'], array( 'page', 'faster' ), true ) ? $args['type'] : 'page';
-		
+
 		// amp support>
 		$this->amp = (bool) ( isset( $args['amp'] ) && $args['amp'] === true );
 
@@ -190,7 +190,7 @@ class iubendaParser {
 					$this->auto_script_tags = array_merge( $this->auto_script_tags, $args['scripts'][0] );
 					unset( $args['scripts'][0] );
 				}
-				
+
 				$this->script_tags = $this->array_merge_custom( $this->script_tags, $args['scripts'] );
 			}
 		}
@@ -207,7 +207,7 @@ class iubendaParser {
 					$this->auto_iframe_tags = array_merge( $this->auto_iframe_tags, $args['iframes'][0] );
 					unset( $args['iframes'][0] );
 				}
-				
+
 				$this->iframe_tags = $this->array_merge_custom( $this->iframe_tags, $args['iframes'] );
 			}
 		}
@@ -221,7 +221,7 @@ class iubendaParser {
 
 	/**
 	 * Static, detect bot & crawler
-	 * 
+	 *
 	 * @return bool
 	 */
 	static function bot_detected() {
@@ -230,22 +230,22 @@ class iubendaParser {
 
 	/**
 	 * Static, utility function: Return true if the user has already given consent on the page
-	 * 
+	 *
 	 * @return boolean
 	 */
 	static function consent_given() {
 		$consent_given = false;
-		
+
 		foreach ( $_COOKIE as $key => $value ) {
 			$found = self::strpos_array( $key, array( '_iub_cs-s', '_iub_cs' ) );
-			
+
 			if ( $found !== false ) {
 				$consent_data = json_decode( stripslashes( $value ), true );
-				
+
 				// read cookie value if given
 				if ( isset( $consent_data['consent'] ) && $consent_data['consent'] == true )
 					$consent_given = true;
-				
+
 				// read purposes if given
 				if ( ! empty( $consent_data['purposes'] ) && is_array( $consent_data['purposes'] ) ) {
 					// all purposes accepted, consent given
@@ -260,49 +260,49 @@ class iubendaParser {
 
 	/**
 	 * Get user accepted purposes.
-	 * 
+	 *
 	 * @return array
 	 */
 	static function get_purposes() {
 		$purposes = array();
-		
+
 		if ( ! empty( $_COOKIE ) ) {
 			foreach ( $_COOKIE as $key => $value ) {
 				$found = self::strpos_array( $key, array( '_iub_cs-s', '_iub_cs' ) );
-				
+
 				if ( $found !== false ) {
 					$consent_data = json_decode( $value, true );
-					
+
 					// read purposes if given
-					if ( ! empty( $consent_data['purposes'] ) && is_array( $consent_data['purposes'] ) )	
+					if ( ! empty( $consent_data['purposes'] ) && is_array( $consent_data['purposes'] ) )
 						$purposes = $consent_data['purposes'];
 				}
 			}
 		}
-		
+
 		return $purposes;
 	}
-	
+
 	/**
 	 * Get script tags to be blocked.
-	 * 
+	 *
 	 * @return array
 	 */
 	private function get_script_tags() {
 		$tags = $this->auto_script_tags;
-		
+
 		foreach ( $this->script_tags as $purpose_id => $tags_list ) {
 			// empty tags list, go to another
 			if ( empty( $tags_list ) )
 				continue;
-				
+
 			// purposes available, filter per purpose
 			if ( ! empty( $this->purposes ) ) {
 				// don't block scripts unavailable in the user purposes
 				// if ( array_key_exists( $purpose_id, $this->purposes ) && $this->purposes[$purpose_id] == false ) {
-				
+
 				// block scripts unavailable in the user purposes
-				if ( ! isset( $this->purposes[$purpose_id] ) || $this->purposes[$purpose_id] == false ) {	
+				if ( ! isset( $this->purposes[$purpose_id] ) || $this->purposes[$purpose_id] == false ) {
 					foreach ( $tags_list as $tag ) {
 						$tags[] = $tag;
 					}
@@ -314,30 +314,30 @@ class iubendaParser {
 				}
 			}
 		}
-		
+
 		return $tags;
 	}
-	
+
 	/**
 	 * Get iframe tags to be blocked.
-	 * 
+	 *
 	 * @return array
 	 */
 	private function get_iframe_tags() {
 		$tags = $this->auto_iframe_tags;
-		
+
 		foreach ( $this->iframe_tags as $purpose_id => $tags_list ) {
 			// empty tags list, go to another
 			if ( empty( $tags_list ) )
 				continue;
-				
+
 			// purposes available, filter per purpose
 			if ( ! empty( $this->purposes ) ) {
 				// don't block iframes unavailable in the user purposes
 				// if ( array_key_exists( $purpose_id, $this->purposes ) && $this->purposes[$purpose_id] == false ) {
-				
+
 				// block iframes unavailable in the user purposes
-				if ( ! isset( $this->purposes[$purpose_id] ) && $this->purposes[$purpose_id] == false ) {	
+				if ( ! isset( $this->purposes[$purpose_id] ) && $this->purposes[$purpose_id] == false ) {
 					foreach ( $tags_list as $tag ) {
 						$tags[] = $tag;
 					}
@@ -349,13 +349,13 @@ class iubendaParser {
 				}
 			}
 		}
-		
+
 		return $tags;
 	}
 
 	/**
 	 * Convert scripts, iframe and other code inside IUBENDAs comment in text/plain to not generate cookies
-	 * 
+	 *
 	 * @param mixed $content
 	 * @return mixed
 	 */
@@ -373,7 +373,7 @@ class iubendaParser {
 					case 'script':
 						if ( $args['pattern'] === 'IUB_REGEX_PURPOSE_PATTERN' )
 							$e->{'data-iub-purposes'} = $args['number'];
-						
+
 						// AMP support
 						if ( $this->amp )
 							$e->{'data-block-on-consent'} = '_till_accepted';
@@ -387,7 +387,7 @@ class iubendaParser {
 					case 'iframe':
 						if ( $args['pattern'] === 'IUB_REGEX_PURPOSE_PATTERN' )
 							$e->{'data-iub-purposes'} = $args['number'];
-							
+
 						// AMP support
 						if ( $this->amp )
 							$e->{'data-block-on-consent'} = '_till_accepted';
@@ -412,7 +412,7 @@ class iubendaParser {
 
 	/**
 	 * Skip scripts and iframes inside IUBENDAs comments.
-	 * 
+	 *
 	 * @param string $content
 	 * @return string
 	 */
@@ -445,7 +445,7 @@ class iubendaParser {
 	}
 
 	/**
-	 * Parse automatically all the scripts in the page and converts it in text/plain 
+	 * Parse automatically all the scripts in the page and converts it in text/plain
 	 * if src or the whole output has inside one of the elements in $auto_script_tags array
 	 *
 	 * @return void
@@ -455,7 +455,7 @@ class iubendaParser {
 			case 'page':
 				// get page contents
 				$html = str_get_html( $this->content_page, true, true, false );
-				
+
 				if ( is_object( $html ) ) {
 					// get scripts
 					$scripts = $html->find( 'script' );
@@ -485,7 +485,7 @@ class iubendaParser {
 
 							if ( ! empty( $s->innertext ) ) {
 								$this->scripts_inline_detected[] = $s->innertext;
-								
+
 								$found = self::strpos_array( $s->innertext, $this->auto_script_tags );
 
 								if ( $found !== false ) {
@@ -499,21 +499,21 @@ class iubendaParser {
 
 								if ( $src ) {
 									$this->scripts_detected[] = $src;
-									
+
 									$found = self::strpos_array( $src, $this->auto_script_tags );
 
 									if ( $found !== false ) {
 										$class = $s->class;
 										$s->class = $class . ' ' . $this->iub_class;
 										$s->type = 'text/plain';
-										
+
 										// add data-iub-purposes attribute
 										$s->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->script_tags );
-										
+
 										// AMP support
 										if ( $this->amp )
 											$s->{'data-block-on-consent'} = '_till_accepted';
-										
+
 										$this->scripts_converted[] = $src;
 									}
 								}
@@ -660,17 +660,17 @@ class iubendaParser {
 						// add inline script as detected
 						if ( ! empty( $script->nodeValue ) )
 							$this->scripts_inline_detected[] = $script->nodeValue;
-						
+
 						$found = self::strpos_array( $src, $script_tags );
 						$found_inline = self::strpos_array( $script->nodeValue, $script_tags );
 
 						if ( $found !== false ) {
 							$script->setAttribute( 'type', 'text/plain' );
 							$script->setAttribute( 'class', $script->getAttribute( 'class' ) . ' ' . $class );
-							
+
 							// add data-iub-purposes attribute
 							$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
-							
+
 							// AMP support
 							if ( $this->amp )
 								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
@@ -680,7 +680,7 @@ class iubendaParser {
 						} elseif ( $found_inline !== false ) {
 							$script->setAttribute( 'type', 'text/plain' );
 							$script->setAttribute( 'class', $script->getAttribute( 'class' ) . ' ' . $class_inline );
-							
+
 							// AMP support
 							if ( $this->amp )
 								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
@@ -737,22 +737,22 @@ class iubendaParser {
 
 							$src = $i->src;
 							$this->iframes_detected[] = $src;
-							
+
 							$found = self::strpos_array( $src, $this->auto_iframe_tags );
-							
+
 							if ( $found !== false ) {
 								$class = $i->class;
 								$i->suppressedsrc = $src;
 								$i->src = $this->iub_empty;
 								$i->class = $class . ' ' . $this->iub_class;
-								
+
 								// add data-iub-purposes attribute
 								$i->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->iframe_tags );
-								
+
 								// AMP support
 								if ( $this->amp )
 									$i->{'data-block-on-consent'} = '_till_accepted';
-									
+
 								$this->iframes_converted[] = $src;
 							}
 						}
@@ -803,17 +803,17 @@ class iubendaParser {
 
 						// add iframe as detected
 						$this->iframes_detected[] = $src;
-						
+
 						$found = self::strpos_array( $src, $iframe_tags );
 
 						if ( $found !== false ) {
 							$iframe->setAttribute( 'src', $empty );
 							$iframe->setAttribute( 'suppressedsrc', $src );
 							$iframe->setAttribute( 'class', $iframe_class . ' ' . $class );
-							
+
 							// per purpose, add data-iub-purposes attribute
 							$iframe->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->iframe_tags ) );
-							
+
 							// AMP support
 							if ( $this->amp )
 								$iframe->setAttribute( 'data-block-on-consent', '_till_accepted' );
@@ -837,7 +837,7 @@ class iubendaParser {
 
 	/**
 	 * Parse all IUBENDAs comments.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function parse_comments() {
@@ -919,7 +919,7 @@ class iubendaParser {
 
 	/**
 	 * Return the final page to output
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function get_converted_page() {
@@ -928,7 +928,7 @@ class iubendaParser {
 
 	/**
 	 * Print iubenda banner, parameter: the script code of iubenda to print the banner
-	 * 
+	 *
 	 * @param string $banner
 	 * @return string
 	 */
@@ -949,10 +949,10 @@ class iubendaParser {
 				};
 			</script>";
 	}
-	
+
 	/**
 	 * Static, utility function: strpos for array wilth wildcard support
-	 * 
+	 *
 	 * @param type $haystack
 	 * @param type $needle
 	 * @return boolean
@@ -960,7 +960,7 @@ class iubendaParser {
 	static function strpos_array( $haystack, $needle ) {
 		if ( empty( $haystack ) || empty( $needle ) )
 			return false;
-		
+
 		$needle = ! is_array( $needle ) ? array( $needle ) : $needle;
 
 		foreach ( $needle as $need ) {
@@ -970,11 +970,11 @@ class iubendaParser {
 				// str_replace - removes double slashes // from url
 				// preg_replace - removes http or https from url
 				$haystack = strtok( str_replace( '//', '', preg_replace( "(^https?://)", "", $haystack ) ), '?' );
-			
+
 				if ( fnmatch( $need, $haystack ) !== false )
 					return $need;
 			// regular
-			} else {		
+			} else {
 				if ( strpos( $haystack, $need ) !== false )
 					return $need;
 			}
@@ -982,10 +982,10 @@ class iubendaParser {
 
 		return false;
 	}
-	
+
 	/**
 	 * Custom array merge helper function.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function array_merge_custom( $builtin, $data ) {
@@ -1005,7 +1005,7 @@ class iubendaParser {
 
 	/**
 	 * Array search helper function.
-	 * 
+	 *
 	 * @param type $needle
 	 * @param type $haystack
 	 * @return boolean

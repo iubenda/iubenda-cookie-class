@@ -1,8 +1,8 @@
-# Read Me 
+# Read Me
 
 ***PHP class for the iubenda cookie law solution***
- 
-If you have European users you need to obtain and manage consent for the use of most cookies. 
+
+If you have European users you need to obtain and manage consent for the use of most cookies.
 The iubenda Cookie Solution is an all-in-one approach developed by iubenda, that helps to make your website GDPR and Cookie Law compliant by integrating with your cookie policy, providing a compliant cookie banner and the blocking management of cookie scripts. The Cookie Solution also allows users to set advertising preferences on-site and within the solution, facilitated the recent-but-widely adopted IAB Europe Transparency & Consent [framework](https://www.iubenda.com/en/help/7440#aboutIAB).
 
 [Read more about the Cookie Solution here](https://www.iubenda.com/en/features#cookie-solution).
@@ -16,7 +16,7 @@ The iubenda Cookie Solution is an all-in-one approach developed by iubenda, that
 
 ## Functionality
 
-This class works with the iubenda Cookie Law Solution and allows you to block the most common widgets and third-party cookies to comply with Cookie Law. 
+This class works with the iubenda Cookie Law Solution and allows you to block the most common widgets and third-party cookies to comply with Cookie Law.
 
 The class is currently able to detect and automatically block the following scripts:
 
@@ -88,15 +88,18 @@ Simply copy your method into the PHP document and then call it with the followin
 * Automatic parsing/replacing of iframe that contain defined src
 * Automatic parsing/replacing of scripts that contain defined src
 
-These operations take place in accordance with the rules explained in [this guide](https://www.iubenda.com/en/help/posts/1229). We suggest that you consult the posts relating to the alteration of script, img and iframe tags. 
+These operations take place in accordance with the rules explained in [this guide](https://www.iubenda.com/en/help/posts/1229). We suggest that you consult the posts relating to the alteration of script, img and iframe tags.
 
 ## Additional Help and docs
 
 * [Full Cookie Solution Documentation](https://www.iubenda.com/en/help/1205-technical-documentation-for-the-cookie-law-solution-banner-cookie-policy-and-consent-management)
-* [Prior Blocking Guide](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies) 
+* [Prior Blocking Guide](https://www.iubenda.com/en/help/1229-cookie-law-solution-preventing-code-execution-that-could-install-cookies)
 * [Cookie Solution Feature Overview](https://www.iubenda.com/en/features#cookie-solution)
 
 ## Changelog
+
+##### 4.1.1
+* Fix: AddThis per-purpose category
 
 ##### 4.1.0
 * New: Google AMP support

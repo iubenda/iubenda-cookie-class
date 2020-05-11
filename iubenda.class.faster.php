@@ -1,13 +1,13 @@
 <?php
 /**
  * iubenda.class.faster.php
- * 
+ *
  * @author iubenda s.r.l
- * @copyright 2018-2019, iubenda s.r.l
+ * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
  * @version 2.0.3
  * @deprecated
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +23,7 @@
  */
 
 class iubendaFaster {
-	
+
 	// variables
 	const IUB_REGEX_PATTERN = '/<!--\s*IUB_COOKIE_POLICY_START\s*-->(.*?)<!--\s*IUB_COOKIE_POLICY_END\s*-->/s';
 	const IUB_REGEX_PATTERN_2 = '/<!--\s*IUB-COOKIE-BLOCK-START\s*-->(.*?)<!--\s*IUB-COOKIE-BLOCK-END\s*-->/s';
@@ -63,7 +63,7 @@ class iubendaFaster {
 
 	/**
 	 * Methods
-	 * 
+	 *
 	 * @param type $offender
 	 * @param type $blacklist
 	 * @return boolean
@@ -86,9 +86,9 @@ class iubendaFaster {
 	}
 
 	/**
-	 * Parse automatically all the scripts in the page and converts it in text/plain 
+	 * Parse automatically all the scripts in the page and converts it in text/plain
 	 * if src or the whole output has inside one of the elements in $auto_script_tags array
-	 * 
+	 *
 	 * @param mixed $content
 	 * @return mixed
 	 */
@@ -149,7 +149,7 @@ class iubendaFaster {
 
 	/**
 	 * Parse all IUBENDAs comment and convert the code inside with create_tags method
-	 * 
+	 *
 	 * @param mixed $content
 	 * @return mixed
 	 */
@@ -183,7 +183,7 @@ class iubendaFaster {
 
 	/**
 	 * Convert scripts, iframe and other code inside IUBENDAs comment in text/plain to not generate cookies
-	 * 
+	 *
 	 * @param mixed $content
 	 * @return mixed
 	 */

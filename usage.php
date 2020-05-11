@@ -1,11 +1,11 @@
 <?php
 /**
  * usage.php
- * 
+ *
  * @author iubenda s.r.l
- * @copyright 2018-2019, iubenda s.r.l
+ * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
