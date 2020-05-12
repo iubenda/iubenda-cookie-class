@@ -49,7 +49,9 @@ ini_set( 'max_execution_time', 300 );
 
 				<?php
 				if ( ! empty( $_POST['url'] ) )
-					$url = filter_var( $_POST['url'], FILTER_SANITIZE_URL );
+          if (substr($_POST['url'], 0, 4) == "http") {
+					   $url = filter_var( $_POST['url'], FILTER_SANITIZE_URL );
+          }
 				else
 					$url = '';
 
