@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.1
+ * @version 4.1.2
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify

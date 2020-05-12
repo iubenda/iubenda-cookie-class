@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.2
+* Security Fix: limit url sanitize to http protocols
+
 ##### 4.1.1
 * Fix: AddThis per-purpose category
 
