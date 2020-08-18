@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.3
+* Tweak: Add Google GPT to per-purpose blocking support
+
 ##### 4.1.2
 * Security Fix: limit url sanitize to http protocols
 
