@@ -37,6 +37,7 @@ class iubendaFaster {
 			"apis.google.com/js/platform.js",
 			"connect.facebook.net",
 			"www.youtube.com/iframe_api",
+			"securepubads.g.doubleclick.net/tag/js/gpt.js",
 			"pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
 			"sharethis.com/button/buttons.js",
 			"addthis.com/js/",

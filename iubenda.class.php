@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.2
+ * @version 4.1.3
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
@@ -90,6 +90,7 @@ class iubendaParser {
 		// Targeting & Advertising
 		5 => array(
 			'googlesyndication.com/pagead/js/adsbygoogle.js',
+			'securepubads.g.doubleclick.net/tag/js/gpt.js',
 			'googlesyndication.com/pagead/show_ads.js',
 			'googleadservices.com/pagead/conversion.js',
 			'www.googletagmanager.com/gtag/js',
