@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.4
+* Fix: Move FB connect to experience enhancement
+
 ##### 4.1.3
 * Tweak: Add Google GPT to per-purpose blocking support
 
