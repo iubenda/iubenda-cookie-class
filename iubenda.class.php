@@ -71,8 +71,9 @@ class iubendaParser {
 			'platform.linkedin.com/in.js',
 			'pinterest.com/js/pinit.js',
 			'codepen.io',
-      'addthis.com/js/',
-			'bat.bing.com'
+            'addthis.com/js/',
+			'bat.bing.com',
+            'connect.facebook.net'
 		),
 		// Analytics
 		4 => array(
@@ -96,7 +97,6 @@ class iubendaParser {
 			'www.googletagmanager.com/gtag/js',
 			'window.adsbygoogle',
 			'static.ads-twitter.com',
-			'connect.facebook.net',
 			'static.criteo.net/js/',
 			'adagionet.com/uploads/js/sipra.js',
 			'cdn-wx.rainbowtgx.com/rtgx.js',
