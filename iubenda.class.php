@@ -39,6 +39,13 @@ class iubendaParser {
 	// purposes
 	public $purposes = array();
 
+	// Listeners to do special handling
+	private $observers = array(
+		'google-analytics.com/analytics.js' => array(
+			'GoogleAnalyticsListener'
+		)
+	);
+
 	// per-purpose scripts
 	public $script_tags = array(
 		// Strictly necessary
@@ -86,7 +93,8 @@ class iubendaParser {
 			'cdn.segment.com/analytics.js',
 			'i.kissmetrics.com/i.js',
 			'cdn.mxpnl.com',
-			'rum-static.pingdom.net/prum.min.js'
+			'rum-static.pingdom.net/prum.min.js',
+			'google-analytics.com/analytics.js'
 		),
 		// Targeting & Advertising
 		5 => array(
@@ -494,6 +502,8 @@ class iubendaParser {
 									$s->class = $class . ' ' . $this->iub_class_inline;
 									$s->type = 'text/plain';
 									$this->scripts_inline_converted[] = $s->innertext;
+									# Run observers
+									$this->run_observers( $found, $s );
 								}
 							} else {
 								$src = $s->src;
@@ -685,6 +695,9 @@ class iubendaParser {
 							// AMP support
 							if ( $this->amp )
 								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
+
+							// Run observers
+							$this->run_observers( $found_inline, $script );
 
 							// add inline script as converted
 							$this->scripts_inline_converted[] = $script->nodeValue;
@@ -1022,4 +1035,30 @@ class iubendaParser {
 		return false;
 	}
 
+	/**
+	 * Get the activate classes
+	 *
+	 * @return array
+	 */
+	public function get_activate_classes() {
+		return array( $this->iub_class, $this->iub_class_inline );
+	}
+
+	/**
+	 * @param string $link
+	 * @param DOMElement $script
+	 */
+	private function run_observers( $link, $script ) {
+		# Escape if there is no defined observer for link
+		if ( ! isset( $this->observers[ $link ] ) ) {
+			return;
+		}
+
+		# Loop on script listeners
+		foreach ( $this->observers[ $link ] as $class ) {
+			require_once "listeners/{$class}.php";
+			$listener_instance = new $class( $script, $this );
+			$listener_instance->handle();
+		}
+	}
 }
