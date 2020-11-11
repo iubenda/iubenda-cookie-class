@@ -502,6 +502,10 @@ class iubendaParser {
 									$s->class = $class . ' ' . $this->iub_class_inline;
 									$s->type = 'text/plain';
 									$this->scripts_inline_converted[] = $s->innertext;
+
+									// add data-iub-purposes attribute
+									$s->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
+
 									# Run observers
 									$this->run_observers( $found, $s );
 								}
@@ -695,6 +699,9 @@ class iubendaParser {
 							// AMP support
 							if ( $this->amp )
 								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
+
+							// add data-iub-purposes attribute
+							$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found_inline, $this->script_tags ) );
 
 							// Run observers
 							$this->run_observers( $found_inline, $script );

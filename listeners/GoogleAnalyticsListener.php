@@ -67,5 +67,6 @@ class GoogleAnalyticsListener {
 		$this->script->setAttribute( 'class', $classes );
 		# Remove AMP support
 		$this->script->removeAttribute( 'data-block-on-consent' );
+		$this->script->removeAttribute( 'data-iub-purposes' );
 	}
 }
