@@ -98,6 +98,10 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.5
+* Tweak: Add google analytics to analytics scripts
+* Tweak: Add data-iub-purposes on inline-scripts
+
 ##### 4.1.4
 * Fix: Move FB connect to experience enhancement
 
