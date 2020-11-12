@@ -43,6 +43,9 @@ class iubendaParser {
 	private $observers = array(
 		'google-analytics.com/analytics.js' => array(
 			'GoogleAnalyticsListener'
+		),
+		'www.googletagmanager.com/gtag/js' => array(
+			'GoogleTagManagerListener'
 		)
 	);
 
@@ -152,6 +155,7 @@ class iubendaParser {
 	public $iframes_skipped = array();
 	public $iframes_detected = array();
 	public $iframes_converted = array();
+	public $scripts_el = array();
 	public $scripts_skipped = array();
 	public $scripts_detected = array();
 	public $scripts_converted = array();
@@ -470,6 +474,8 @@ class iubendaParser {
 					$scripts = $html->find( 'script' );
 
 					if ( is_array( $scripts ) ) {
+
+						$this->scripts_el = $scripts;
 						$count = count( $scripts );
 						$class_skip = $this->iub_class_skip;
 
@@ -528,6 +534,9 @@ class iubendaParser {
 										// AMP support
 										if ( $this->amp )
 											$s->{'data-block-on-consent'} = '_till_accepted';
+
+										// Run observers
+										$this->run_observers( $found, $s );
 
 										$this->scripts_converted[] = $src;
 									}
@@ -645,7 +654,7 @@ class iubendaParser {
 
 				// search for scripts
 				$scripts = $document->getElementsByTagName( 'script' );
-
+				$this->scripts_el = $scripts;
 				// any scripts?
 				if ( ! empty( $scripts ) && is_object( $scripts ) ) {
 					foreach ( $scripts as $script ) {
@@ -689,6 +698,9 @@ class iubendaParser {
 							// AMP support
 							if ( $this->amp )
 								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
+
+							// Run observers
+							$this->run_observers( $found, $script );
 
 							// add script as converted
 							$this->scripts_converted[] = $src;

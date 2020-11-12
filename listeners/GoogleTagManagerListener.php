@@ -1,9 +1,9 @@
 <?php
 
-class GoogleAnalyticsListener {
+class GoogleTagManagerListener {
 
 	/**
-	 * @var DOMElement
+	 * @var DOMElement|simple_html_dom_node
 	 */
 	private $script;
 
@@ -17,7 +17,7 @@ class GoogleAnalyticsListener {
 	 *
 	 * @var string
 	 */
-	private $GA_anonymize_pattern = '~^(?:(?!//).)*?(ga.+(set)\b.+(,).+(anonymizeIp)\b.+(,).+(true|[1]{1})\b)(?!(?:(?!/\*)[\s\S])*\*/)~mi';
+	private $gtag_anonymize_pattern = '~^(?:(?!//).)*?(gtag.+(config)\b.+(,).+(,).+({).+(anonymize_ip)\b.+(:).+(true|[1]{1})\b)(?!(?:(?!/\*)[\s\S])*\*/)~mi';
 
 	/**
 	 * GoogleAnalyticsListener constructor.
@@ -34,17 +34,20 @@ class GoogleAnalyticsListener {
 	 * Special handling for enabled anonymizeIP flag
 	 */
 	public function handle() {
-		if ( $this->script instanceof simple_html_dom_node ) {
-			$str = $this->script->innertext;
-		} else {
-			$str = $this->script->nodeValue;
-		}
+		# Loop on all scripts
+		foreach ( $this->iub_parser->scripts_el as $script ) {
+			$str = $script->innertext ?: $script->nodeValue;
 
-		# if the GA is anonymized then unblock it
-		if ( preg_match( $this->GA_anonymize_pattern, $str ) ) {
-			$this->unblock_script();
+			# Avoid non inline-scripts
+			if ( ! trim( $str ) ) {
+				continue;
+			}
 
-			return;
+			# Match the gtag anonymize pattern
+			if ( preg_match( $this->gtag_anonymize_pattern, $str ) ) {
+				$this->unblock_script();
+				break;
+			}
 		}
 	}
 
@@ -65,8 +68,9 @@ class GoogleAnalyticsListener {
 		# Reset everything to original
 		$this->script->setAttribute( 'type', 'text/javascript' );
 		$this->script->setAttribute( 'class', $classes );
+		$this->script->removeAttribute( 'data-iub-purposes' );
+
 		# Remove AMP support
 		$this->script->removeAttribute( 'data-block-on-consent' );
-		$this->script->removeAttribute( 'data-iub-purposes' );
 	}
 }
