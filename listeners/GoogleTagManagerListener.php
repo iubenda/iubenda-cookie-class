@@ -36,7 +36,11 @@ class GoogleTagManagerListener {
 	public function handle() {
 		# Loop on all scripts
 		foreach ( $this->iub_parser->scripts_el as $script ) {
-			$str = $script->innertext ?: $script->nodeValue;
+			if ( $this->script instanceof simple_html_dom_node ) {
+				$str = $script->innertext;
+			} else {
+				$str = $script->nodeValue;
+			}
 
 			# Avoid non inline-scripts
 			if ( ! trim( $str ) ) {

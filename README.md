@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.6
+* Fix: Check script type before getting content in GTM
+
 ##### 4.1.5
 * Tweak: Add google analytics to analytics scripts
 * Tweak: Add data-iub-purposes on inline-scripts
