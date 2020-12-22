@@ -350,7 +350,7 @@ class iubendaParser {
 				// if ( array_key_exists( $purpose_id, $this->purposes ) && $this->purposes[$purpose_id] == false ) {
 
 				// block iframes unavailable in the user purposes
-				if ( ! isset( $this->purposes[$purpose_id] ) && $this->purposes[$purpose_id] == false ) {
+				if ( ! isset( $this->purposes[$purpose_id] ) || $this->purposes[$purpose_id] == false ) {
 					foreach ( $tags_list as $tag ) {
 						$tags[] = $tag;
 					}
