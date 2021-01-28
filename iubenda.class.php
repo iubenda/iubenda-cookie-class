@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.7
+ * @version 4.1.8
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
@@ -510,7 +510,9 @@ class iubendaParser {
 									$this->scripts_inline_converted[] = $s->innertext;
 
 									// add data-iub-purposes attribute
-									$s->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
+									if ( ! $s->hasAttribute( 'data-iub-purposes' ) ) {
+										$s->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
+									}
 
 									# Run observers
 									$this->run_observers( $found, $s );
@@ -529,7 +531,9 @@ class iubendaParser {
 										$s->type = 'text/plain';
 
 										// add data-iub-purposes attribute
-										$s->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->script_tags );
+										if ( ! $s->hasAttribute( 'data-iub-purposes' ) ) {
+											$s->{'data-iub-purposes'} = $this->recursive_array_search( $found, $this->script_tags );
+										}
 
 										// AMP support
 										if ( $this->amp )
@@ -693,7 +697,9 @@ class iubendaParser {
 							$script->setAttribute( 'class', $script->getAttribute( 'class' ) . ' ' . $class );
 
 							// add data-iub-purposes attribute
-							$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
+							if ( ! $script->hasAttribute( 'data-iub-purposes' ) ) {
+								$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found, $this->script_tags ) );
+							}
 
 							// AMP support
 							if ( $this->amp )
@@ -713,7 +719,9 @@ class iubendaParser {
 								$script->setAttribute( 'data-block-on-consent', '_till_accepted' );
 
 							// add data-iub-purposes attribute
-							$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found_inline, $this->script_tags ) );
+							if ( ! $script->hasAttribute( 'data-iub-purposes' ) ) {
+								$script->setAttribute( 'data-iub-purposes', $this->recursive_array_search( $found_inline, $this->script_tags ) );
+							}
 
 							// Run observers
 							$this->run_observers( $found_inline, $script );
