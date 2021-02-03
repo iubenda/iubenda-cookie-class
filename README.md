@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.8
+* Fix: Avoid overriding the purposes attr if it was set
+
 ##### 4.1.7
 * Fix: purpose evaluation for iframes blocking
 
