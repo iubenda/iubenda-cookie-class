@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.8
+ * @version 4.1.9
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,6 @@ class iubendaParser {
 		2 => array(
 			'apis.google.com/js/api.js',
 			'cse.google.com/cse.js',
-			'googletagmanager.com/gtm.js',
 			'loader.engage.gsfn.us/loader.js',
 			'headwayapp.co/widget.js',
 			'wchat.freshchat.com',
