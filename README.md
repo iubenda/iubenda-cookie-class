@@ -98,7 +98,11 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
-##### 4.1.8
+##### 4.1.9
+* Fix SSRF security vulnerability
+* Remove googletagmanager.com/gtm.js from basic internaction
+
+##### ``4.1.8
 * Fix: Avoid overriding the purposes attr if it was set
 
 ##### 4.1.7
