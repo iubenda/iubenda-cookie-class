@@ -21,6 +21,10 @@
  */
 
 ini_set( 'max_execution_time', 300 );
+$whitelist_domains = [
+    // @TODO Add your domains here like https://iubenda.com
+    // Make sure Http/Https protocol is set
+];
 ?>
 
 <html>
@@ -41,19 +45,35 @@ ini_set( 'max_execution_time', 300 );
 				<div class="col-md-12">
 					<h1>iubenda class test</h1>
 					<form action="" method="POST">
-						<strong>URL WEBSITE</strong><BR>
-						<input type="text" name="url">
-						<input type="submit" class="btn" value="Analyze">
+                        <class class="row">
+                            <div class="col-md-5">
+                                <label for="inputState">URL WEBSITE</label>
+                                <select class="form-control" name="url">
+                                    <?php foreach ($whitelist_domains as $index => $domain):?>
+                                        <option value="<?php echo $index; ?>"><?php echo $domain; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <p>Note: This file is used for testing purposes and it's not recommended to deploy it on your production environment
+                                    or at least remove all domains from your whitelist domains.</p>
+                            </div>
+                            <div class="col-md-5">
+                                <br>
+                                <input type="submit" class="btn" value="Analyze">
+                            </div>
+                        </class>
 					</form>
 				</div>
 
 				<?php
-				if ( ! empty( $_POST['url'] ) )
-          if (substr($_POST['url'], 0, 4) == "http") {
-					   $url = filter_var( $_POST['url'], FILTER_SANITIZE_URL );
-          }
-				else
-					$url = '';
+                if (isset($_POST['url'])):
+                    $url = $_POST['url'];
+                    $url = isset($whitelist_domains[$url]) ? $whitelist_domains[$url] : '';
+                    if ($url && substr($url, 0, 7) == "http://" || substr($url, 0, 8) == "https://") {
+                        $url = filter_var($url, FILTER_SANITIZE_URL);
+                    }
+                    else {
+                        $url = '';
+                    }
 
 				if ( $url ) {
 
@@ -108,6 +128,7 @@ ini_set( 'max_execution_time', 300 );
 
 					echo "</div>";
 				}
+                endif;
 				?>
 			</div>
 		</div>
