@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.9
+ * @version 4.1.10
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
@@ -96,7 +96,8 @@ class iubendaParser {
 			'i.kissmetrics.com/i.js',
 			'cdn.mxpnl.com',
 			'rum-static.pingdom.net/prum.min.js',
-			'google-analytics.com/analytics.js'
+			'google-analytics.com/analytics.js',
+            'www.googletagmanager.com/gtag/js'
 		),
 		// Targeting & Advertising
 		5 => array(
@@ -104,7 +105,6 @@ class iubendaParser {
 			'securepubads.g.doubleclick.net/tag/js/gpt.js',
 			'googlesyndication.com/pagead/show_ads.js',
 			'googleadservices.com/pagead/conversion.js',
-			'www.googletagmanager.com/gtag/js',
 			'window.adsbygoogle',
 			'static.ads-twitter.com',
 			'static.criteo.net/js/',

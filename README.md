@@ -98,9 +98,12 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.10
+* Move www.googletagmanager.com/gtag/js under analytics #4
+
 ##### 4.1.9
 * Fix SSRF security vulnerability
-* Remove googletagmanager.com/gtm.js from basic internaction
+* Remove googletagmanager.com/gtm.js from basic interaction
 
 ##### ``4.1.8
 * Fix: Avoid overriding the purposes attr if it was set
