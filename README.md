@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.11
+* Support PHP 8
+
 ##### 4.1.10
 * Move www.googletagmanager.com/gtag/js under analytics #4
 

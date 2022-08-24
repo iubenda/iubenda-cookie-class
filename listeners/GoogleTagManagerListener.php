@@ -43,7 +43,7 @@ class GoogleTagManagerListener {
 			}
 
 			# Avoid non inline-scripts
-			if ( ! trim( $str ) ) {
+			if ( ! trim( $str  ?: '' ) ) {
 				continue;
 			}
 

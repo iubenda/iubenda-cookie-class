@@ -444,7 +444,7 @@ class simple_html_dom_node
 			foreach ($this->nodes as $n) {
 				// Start paragraph after a blank line
 				if ($n->tag === 'p') {
-					$ret = trim($ret) . "\n\n";
+					$ret = trim($ret ?: '') . "\n\n";
 				}
 
 				$ret .= $this->convert_text($n->text());
@@ -632,7 +632,7 @@ class simple_html_dom_node
 			// Check if ID matches
 			if ($pass && $id !== '' && isset($node->attr['id'])) {
 				// Note: Only consider the first ID (as browsers do)
-				$node_id = explode(' ', trim($node->attr['id']))[0];
+				$node_id = explode(' ', trim($node->attr['id'] ?: ''))[0];
 
 				if($id !== $node_id) { $pass = false; }
 			}
@@ -818,7 +818,7 @@ class simple_html_dom_node
 				 * anything (since the words are separated by spaces). Also if
 				 * "val" is the empty string, it will never represent anything.
 				 */
-				return in_array($pattern, explode(' ', trim($value)), true);
+				return in_array($pattern, explode(' ', trim($value ?: '')), true);
 		}
 		return false;
 	}
@@ -876,7 +876,7 @@ class simple_html_dom_node
 
 		preg_match_all(
 			$pattern,
-			trim($selector_string) . ' ', // Add final ' ' as pseudo separator
+			trim($selector_string ?: '') . ' ', // Add final ' ' as pseudo separator
 			$matches,
 			PREG_SET_ORDER
 		);
@@ -889,7 +889,7 @@ class simple_html_dom_node
 		$result = array();
 
 		foreach ($matches as $m) {
-			$m[0] = trim($m[0]);
+			$m[0] = trim($m[0] ?: '');
 
 			// Skip NoOps
 			if ($m[0] === '' || $m[0] === '/' || $m[0] === '//') { continue; }
@@ -915,7 +915,7 @@ class simple_html_dom_node
 			if($m[4] !== '') {
 				preg_match_all(
 					"/\[@?(!?[\w:-]+)(?:([!*^$|~]?=)[\"']?(.*?)[\"']?)?(?:\s+?([iIsS])?)?\]/is",
-					trim($m[4]),
+					trim($m[4] ?: ''),
 					$attributes,
 					PREG_SET_ORDER
 				);
@@ -925,7 +925,7 @@ class simple_html_dom_node
 
 				foreach($attributes as $att) {
 					// Skip empty matches
-					if(trim($att[0]) === '') { continue; }
+					if(trim($att[0] ?: '') === '') { continue; }
 
 					$inverted = (isset($att[1][0]) && $att[1][0] === '!');
 					$m[4][] = array(
@@ -939,10 +939,10 @@ class simple_html_dom_node
 			}
 
 			// Sanitize Separator
-			if ($m[5] !== '' && trim($m[5]) === '') { // Descendant Separator
+			if ($m[5] !== '' && trim($m[5] ?: '') === '') { // Descendant Separator
 				$m[5] = ' ';
 			} else { // Other Separator
-				$m[5] = trim($m[5]);
+				$m[5] = trim($m[5] ?: '');
 			}
 
 			// Clear Separator if it's a Selector List
@@ -1625,7 +1625,7 @@ class simple_html_dom
 	{
 		$this->clear();
 
-		$this->doc = trim($str);
+		$this->doc = trim($str ?: '');
 		$this->size = strlen($this->doc);
 		$this->original_size = $this->size; // original size of the html
 		$this->pos = 0;
@@ -2115,7 +2115,7 @@ class simple_html_dom
 		// PaperG: If this is a "class" selector, lets get rid of the preceeding
 		// and trailing space since some people leave it in the multi class case.
 		if ($name === 'class') {
-			$value = trim($value);
+			$value = trim($value ?: '');
 		}
 
 		if (!$is_duplicate) {
