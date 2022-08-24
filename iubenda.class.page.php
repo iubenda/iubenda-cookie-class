@@ -266,10 +266,10 @@ if('callback' in _iub.csConfiguration) {
 				$html = preg_replace( "#google_ad_width =(.*?);#i", "", $html, 1 );
 				$html = preg_replace( "#google_ad_height =(.*?);#i", "", $html, 1 );
 
-				$ad_client = trim( $ad_client[1] );
-				$ad_slot = trim( $ad_slot[1] );
-				$ad_width = trim( $ad_width[1] );
-				$ad_height = trim( $ad_height[1] );
+				$ad_client = trim( $ad_client[1] ?: '' );
+				$ad_slot = trim( $ad_slot[1] ?: '' );
+				$ad_width = trim( $ad_width[1] ?: '' );
+				$ad_height = trim( $ad_height[1] ?: '' );
 
 				$ad_class = 'class="_iub_cs_activate_google_ads"';
 				$ad_style = 'style="width:' . $ad_width . 'px; height:' . $ad_height . 'px;"';

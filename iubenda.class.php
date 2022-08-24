@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.10
+ * @version 4.1.11
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
@@ -441,7 +441,7 @@ class iubendaParser {
 				switch ( $element->tag ) {
 					case 'script':
 					case 'iframe':
-						$class = trim( $element->class );
+						$class = trim( $element->class ?: '' );
 						$element->class = ( $class !== '' ? $class . ' ' : '' ) . $this->iub_class_skip;
 						$js .= $element->outertext;
 						break;
@@ -481,7 +481,7 @@ class iubendaParser {
 						// loop through scripts
 						for ( $j = 0; $j < $count; $j ++  ) {
 							$s = $scripts[$j];
-							$script_class = trim( $s->class );
+							$script_class = trim( $s->class ?: '' );
 
 							if ( $script_class !== '' ) {
 								$classes = explode( ' ', $script_class );
@@ -565,10 +565,10 @@ class iubendaParser {
 						$html = preg_replace( "#google_ad_width =(.*?);#i", "", $html, 1 );
 						$html = preg_replace( "#google_ad_height =(.*?);#i", "", $html, 1 );
 
-						$ad_client = trim( $ad_client[1] );
-						$ad_slot = trim( $ad_slot[1] );
-						$ad_width = trim( $ad_width[1] );
-						$ad_height = trim( $ad_height[1] );
+						$ad_client = trim( $ad_client[1] ?: '' );
+						$ad_slot = trim( $ad_slot[1] ?: '' );
+						$ad_width = trim( $ad_width[1] ?: '' );
+						$ad_height = trim( $ad_height[1] ?: '' );
 
 						$ad_class = 'class="' . $this->iub_class . '_google_ads"';
 						$ad_style = 'style="width:' . $ad_width . 'px; height:' . $ad_height . 'px;"';
@@ -658,7 +658,7 @@ class iubendaParser {
 				if ( ! empty( $scripts ) && is_object( $scripts ) ) {
 					foreach ( $scripts as $script ) {
 						$src = $script->getAttribute( 'src' );
-						$script_class = trim( $script->getAttribute( 'class' ) );
+						$script_class = trim( $script->getAttribute( 'class' ) ?: '' );
 
 						if ( $script_class !== '' ) {
 							$classes = explode( ' ', $script_class );
@@ -754,7 +754,7 @@ class iubendaParser {
 
 						for ( $j = 0; $j < $count; $j ++  ) {
 							$i = $iframes[$j];
-							$iframe_class = trim( $i->class );
+							$iframe_class = trim( $i->class ?: '' );
 
 							if ( $iframe_class !== '' ) {
 								$classes = explode( ' ', $iframe_class );
@@ -820,7 +820,7 @@ class iubendaParser {
 				if ( ! empty( $iframes ) && is_object( $iframes ) ) {
 					foreach ( $iframes as $iframe ) {
 						$src = $iframe->getAttribute( 'src' );
-						$iframe_class = trim( $iframe->getAttribute( 'class' ) );
+						$iframe_class = trim( $iframe->getAttribute( 'class' ) ?: '' );
 
 						if ( $iframe_class !== '' ) {
 							$classes = explode( ' ', $iframe_class );
