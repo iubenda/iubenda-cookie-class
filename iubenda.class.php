@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.11
+ * @version 4.1.12
  * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
@@ -121,9 +121,7 @@ class iubendaParser {
 		// Strictly necessary
 		1 => array(),
 		// Basic interactions & functionalities
-		2 => array(
-			'googletagmanager.com/ns.html'
-		),
+		2 => array(),
 		// Experience enhancement
 		3 => array(
 			'apis.google.com',

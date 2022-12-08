@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.12
+* Remove GTM from Basic interaction in Iframes
+
 ##### 4.1.11
 * Support PHP 8
 
