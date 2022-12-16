@@ -6,7 +6,6 @@
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
  * @version 1.0.3
- * @deprecated
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
