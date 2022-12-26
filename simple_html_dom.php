@@ -1889,7 +1889,7 @@ class simple_html_dom
 						return $this->as_text_node($tag);
 					}
 				} elseif (($this->parent->parent)
-				          && strtolower($this->parent->parent->tag) === $tag_lower
+					&& strtolower($this->parent->parent->tag) === $tag_lower
 				) { // Grandparent exists and current tag closes it
 					$this->parent->_[HDOM_INFO_END] = 0;
 					$this->parent = $this->parent->parent;
