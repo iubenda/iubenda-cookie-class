@@ -18,12 +18,12 @@
  *   Vadim Voituk
  *   Antcs
  *
- * Version Rev. 1.9 (290)
+ * Version Rev. 1.9.1 (291)
  * 
  * @author S.C. Chen, John Schlick, Rus Carroll, logmanoriginal
  * @copyright 2018-2019, iubenda s.r.l
  * @license MIT License
- * @version 1.9
+ * @version 1.9.1
  */
 
 define('HDOM_TYPE_ELEMENT', 1);
@@ -612,6 +612,13 @@ class simple_html_dom_node
 			// Skip root nodes
 			if(!$node->parent) {
 				$pass = false;
+			}
+
+			// Handle 'text' selector
+			if($pass && $tag === 'text' && $node->tag === 'text') {
+				$ret[array_search($node, $this->dom->nodes, true)] = 1;
+				unset($node);
+				continue;
 			}
 
 			// Skip if node isn't a child node (i.e. text nodes)
