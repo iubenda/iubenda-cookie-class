@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.14
+* Bugfix: escape if custom scripts/iframes are empty
+``
 ##### 4.1.13
 * Update PHP Simple HTML DOM Parser library to the latest version 1.9.1
 * Remove deprecated (Faster/Page) classes
