@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.14
+ * @version 4.1.15
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -162,6 +162,16 @@ class iubendaParser {
 	private $iub_class = '_iub_cs_activate';
 	private $iub_class_inline = '_iub_cs_activate-inline';
 	private $iub_class_skip = '_iub_cs_skip';
+
+	/**
+	 * @var mixed
+	 */
+	private $original_content_page;
+
+	/**
+	 * @var mixed
+	 */
+	private $content_page;
 
 	/**
 	 * Construct: the whole HTML output of the page
