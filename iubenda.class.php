@@ -5,7 +5,7 @@
  * @author iubenda s.r.l
  * @copyright 2018-2020, iubenda s.r.l
  * @license GNU/GPL
- * @version 4.1.15
+ * @version 4.1.16
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,6 @@ class iubendaParser {
 			'codepen.io',
             'addthis.com/js/',
 			'bat.bing.com',
-            'connect.facebook.net'
 		),
 		// Analytics
 		4 => array(
@@ -111,7 +110,8 @@ class iubendaParser {
 			'cdn-wx.rainbowtgx.com/rtgx.js',
 			'outbrain.js',
 			's.adroll.com',
-			'scdn.cxense.com'
+			'scdn.cxense.com',
+			'connect.facebook.net',
 		)
 	);
 

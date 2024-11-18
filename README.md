@@ -98,6 +98,9 @@ These operations take place in accordance with the rules explained in [this guid
 
 ## Changelog
 
+##### 4.1.16
+* Tweak: Assign connect.facebook.com to Targeting & Advertising category.
+
 ##### 4.1.15
 * Support PHP 8.2 | Fix Creation of dynamic properties
 
