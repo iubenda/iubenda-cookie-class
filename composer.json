@@ -6,7 +6,7 @@
     "homepage": "https://github.com/iubenda/iubenda-cookie-class",
     "license": "MIT",
     "require": {
-        "php": ">=5.2.4"
+        "php": ">=7.0"
     },
 	"autoload": {
 		"files": [
