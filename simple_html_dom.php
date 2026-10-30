@@ -497,6 +497,23 @@ class simple_html_dom_node
 					default: $quote = '';
 				}
 
+				// Harden attribute serialization: an attribute value must never be
+				// able to terminate its own quoting. restore_noise() (called while
+				// parsing this value, before it ever reaches here) can reinsert
+				// attacker-controlled text containing the quote character, which
+				// would otherwise break out of the attribute and inject live
+				// markup (stored XSS). Escape the quote character in use; for
+				// unquoted attributes force double quoting so a bare value cannot
+				// be terminated early by whitespace or '>'.
+				if ($quote === '"') {
+					$val = str_replace('"', '&quot;', $val);
+				} elseif ($quote === '\'') {
+					$val = str_replace('\'', '&#039;', $val);
+				} else {
+					$quote = '"';
+					$val = str_replace('"', '&quot;', $val);
+				}
+
 				$ret .= $key
 				. $this->_[HDOM_INFO_SPACE][$i][1]
 				. '='
@@ -1406,6 +1423,7 @@ class simple_html_dom
 	protected $cursor;
 	protected $parent;
 	protected $noise = array();
+	protected $noise_prefix = '___noise___';
 	protected $token_blank = " \t\r\n";
 	protected $token_equal = ' =/>';
 	protected $token_slash = " />\r\n\t";
@@ -1442,6 +1460,8 @@ class simple_html_dom
 		'span' => 1,
 		'table' => 1
 	);
+	// Declared to avoid the PHP 8.2+ dynamic-property deprecation; assigned conditionally in __construct().
+	public $optional_closing_array = array();
 	protected $optional_closing_tags = array(
 		// Not optional, see
 		// https://www.w3.org/TR/html/textlevel-semantics.html#the-b-element
@@ -1638,6 +1658,24 @@ class simple_html_dom
 		$this->pos = 0;
 		$this->cursor = 1;
 		$this->noise = array();
+		// Make placeholder keys unforgeable per parse. remove_noise() stashes
+		// <code>/comment/script/style/CDATA bodies under these keys; if the key
+		// were guessable (the old fixed "___noise___ 1000"), an unauthenticated
+		// commenter could pre-seed a matching key in an attribute value and have
+		// their stashed text substituted into that attribute at render time
+		// (stored XSS). A per-parse random suffix removes the attacker's ability
+		// to address the noise table at all. Only unpredictability to a remote
+		// commenter is required here, not cryptographic strength, so fall back
+		// instead of letting a missing CSPRNG throw and turn this parse (which
+		// runs on every page) into a fatal error.
+		try {
+			$rand = bin2hex( random_bytes( 8 ) );
+		} catch ( \Exception $e ) {
+			$rand = md5( uniqid( (string) mt_rand(), true ) );
+		}
+		// Trailing space is deliberate: an attribute name stops at a space, so a
+		// key can never be one and noise can never be restored into that position.
+		$this->noise_prefix = '___noise___' . $rand . ' ';
 		$this->nodes = array();
 		$this->lowercase = $lowercase;
 		$this->default_br_text = $defaultBRText;
@@ -2112,7 +2150,17 @@ class simple_html_dom
 				$value = $this->copy_until($this->token_attr);
 		}
 
-		$value = $this->restore_noise($value);
+		$restored = $this->restore_noise($value);
+
+		// Noise was restored INTO an attribute value. Noise bodies never belong
+		// there, so treat the restored text as untrusted and neutralise it for
+		// the attribute context rather than only relying on the unforgeable
+		// placeholder prefix (second, independent layer).
+		if ($restored !== $value) {
+			$restored = $this->neutralise_restored_attribute($name, $restored);
+		}
+
+		$value = $restored;
 
 		// PaperG: Attributes should not have \r or \n in them, that counts as
 		// html whitespace.
@@ -2207,7 +2255,7 @@ class simple_html_dom
 		);
 
 		for ($i = $count - 1; $i > -1; --$i) {
-			$key = '___noise___' . sprintf('% 5d', count($this->noise) + 1000);
+			$key = $this->noise_prefix . sprintf('% 5d', count($this->noise) + 1000);
 
 			if (is_object($debug_object)) {
 				$debug_object->debug_log(2, 'key is: ' . $key);
@@ -2231,45 +2279,108 @@ class simple_html_dom
 		global $debug_object;
 		if (is_object($debug_object)) { $debug_object->debug_log_entry(1); }
 
-		while (($pos = strpos($text, '___noise___')) !== false) {
-			// Sometimes there is a broken piece of markup, and we don't GET the
-			// pos+11 etc... token which indicates a problem outside of us...
+		$prefix     = $this->noise_prefix;
+		$prefix_len = strlen($prefix);
+		$offset     = 0;
 
-			// todo: "___noise___1000" (or any number with four or more digits)
-			// in the DOM causes an infinite loop which could be utilized by
-			// malicious software
-			if (strlen($text) > $pos + 15) {
-				$key = '___noise___'
-				. $text[$pos + 11]
-				. $text[$pos + 12]
-				. $text[$pos + 13]
-				. $text[$pos + 14]
-				. $text[$pos + 15];
+		// The search offset only ever moves forward, so the loop is O(n) in the
+		// length of $text and can never rescan a region it has already resolved.
+		// It is the structural guarantee against the DoS: no branch below re-emits
+		// the prefix, and every branch advances $offset past the token it saw.
+		while (($pos = strpos($text, $prefix, $offset)) !== false) {
+			// A valid placeholder is the per-parse prefix followed by a 5-char
+			// numeric key. The prefix carries a random, per-parse component, so
+			// a token an attacker typed verbatim can never collide with a real
+			// key and can never address the noise table.
+			if (strlen($text) > $pos + $prefix_len + 4) {
+				$key = $prefix
+				. $text[$pos + $prefix_len]
+				. $text[$pos + $prefix_len + 1]
+				. $text[$pos + $prefix_len + 2]
+				. $text[$pos + $prefix_len + 3]
+				. $text[$pos + $prefix_len + 4];
 
 				if (is_object($debug_object)) {
 					$debug_object->debug_log(2, 'located key of: ' . $key);
 				}
 
 				if (isset($this->noise[$key])) {
+					$restored = $this->noise[$key];
+
+					// Defence in depth: if the placeholder sits right after an
+					// attribute's opening quote, escape that quote character in
+					// the restored text so it cannot terminate the attribute.
+					if ($pos > 0 && ($text[$pos - 1] === '"' || $text[$pos - 1] === '\'')) {
+						$restored = str_replace(
+							$text[$pos - 1],
+							$text[$pos - 1] === '"' ? '&quot;' : '&#039;',
+							$restored
+						);
+					}
+
 					$text = substr($text, 0, $pos)
-					. $this->noise[$key]
-					. substr($text, $pos + 16);
+					. $restored
+					. substr($text, $pos + $prefix_len + 5);
+
+					// Resume the search at the start of the just-restored body so a
+					// placeholder nested inside it (e.g. a comment stashed inside a
+					// <script> body) is still expanded. The noise table is finite
+					// and each pass resolves one entry, so this still terminates.
+					$offset = $pos;
 				} else {
-					// do this to prevent an infinite loop.
-					$text = substr($text, 0, $pos)
-					. 'UNDEFINED NOISE FOR KEY: '
-					. $key
-					. substr($text, $pos + 16);
+					// Unknown key: never re-emit the prefix (that is what let the
+					// old guard spin forever). Leave the original bytes in place and
+					// step the offset past this occurrence, so content is preserved
+					// rather than silently deleted and the loop still advances.
+					$offset = $pos + $prefix_len + 5;
 				}
 			} else {
-				// There is no valid key being given back to us... We must get
-				// rid of the ___noise___ or we will have a problem.
-				$text = substr($text, 0, $pos)
-				. 'NO NUMERIC NOISE KEY'
-				. substr($text, $pos + 11);
+				// Truncated token at the end of the string: leave the bytes and
+				// step past the prefix so the loop terminates without eating them.
+				$offset = $pos + $prefix_len;
 			}
 		}
 		return $text;
+	}
+
+	/**
+	 * Neutralise noise that was restored INTO an attribute value.
+	 *
+	 * Noise bodies (script/style/code/comment/CDATA/PI) are attacker-influenceable
+	 * text and never legitimately belong inside an attribute value. When one is
+	 * restored there it must be treated as untrusted and neutralised for the
+	 * attribute context, not merely quote-escaped: executable URL schemes are
+	 * refused on URL-bearing attributes, and the value is HTML-encoded so it can
+	 * neither terminate the attribute nor be reinterpreted as markup. This is an
+	 * independent second layer behind the unforgeable per-parse placeholder
+	 * prefix, so the fix does not rest on key secrecy alone.
+	 *
+	 * @param string $name  Attribute name.
+	 * @param string $value Attribute value after noise restoration.
+	 * @return string
+	 */
+	protected function neutralise_restored_attribute($name, $value)
+	{
+		static $url_attributes = array(
+			'href' => 1, 'src' => 1, 'action' => 1, 'formaction' => 1,
+			'xlink:href' => 1, 'poster' => 1, 'cite' => 1, 'background' => 1,
+			'longdesc' => 1, 'manifest' => 1, 'data' => 1, 'srcset' => 1,
+			'codebase' => 1, 'usemap' => 1, 'icon' => 1, 'ping' => 1,
+		);
+
+		if (isset($url_attributes[strtolower($name)])) {
+			// Browsers decode entities and skip control/whitespace characters when
+			// resolving a URL scheme, so normalise the same way before checking.
+			$probe = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+			$probe = strtolower(preg_replace('/[\x00-\x20\x7f]+/', '', $probe));
+			if (preg_match('/^(javascript|vbscript|data|livescript|mocha):/', $probe)) {
+				return '';
+			}
+		}
+
+		// ENT_QUOTES (HTML 4.01 entity names) so the apostrophe becomes &#039;,
+		// matching the convention makeup() already uses for attribute values.
+		return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
 	}
 
 	function search_noise($text)
