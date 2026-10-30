@@ -1,16 +1,26 @@
 {
     "name": "iubenda/iubenda-cookie-class",
-    "type": "project",
-    "description": "PHP class for the cookie law solution",
-    "keywords": ["cookie","gdpr"],
+    "type": "library",
+    "description": "PHP class for the iubenda Cookie Solution: scans page HTML and applies prior blocking of cookie/tracking scripts to help with GDPR and Cookie Law compliance.",
+    "keywords": ["cookie", "gdpr", "consent", "cookie-law", "iubenda", "privacy", "script-blocking"],
     "homepage": "https://github.com/iubenda/iubenda-cookie-class",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "iubenda",
+            "homepage": "https://www.iubenda.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/iubenda/iubenda-cookie-class/issues",
+        "source": "https://github.com/iubenda/iubenda-cookie-class"
+    },
     "require": {
         "php": ">=7.0"
     },
-	"autoload": {
-		"files": [
-			"iubenda.class.php"
-		]
-	}
+    "autoload": {
+        "files": [
+            "iubenda.class.php"
+        ]
+    }
 }

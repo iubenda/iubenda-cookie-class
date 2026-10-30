@@ -14,6 +14,26 @@ The iubenda Cookie Solution is an all-in-one approach developed by iubenda, that
 
 * * *
 
+## Requirements
+
+* PHP 7.0 or higher
+
+## Installation
+
+Install with [Composer](https://getcomposer.org/):
+
+```bash
+composer require iubenda/iubenda-cookie-class
+```
+
+The package autoloads `iubenda.class.php`, which exposes the `iubendaParser` class. If you are not using Composer, simply `require_once` the class directly:
+
+```php
+require_once 'iubenda.class.php';
+```
+
+* * *
+
 ## Functionality
 
 This class works with the iubenda Cookie Law Solution and allows you to block the most common widgets and third-party cookies to comply with Cookie Law.
@@ -183,4 +203,4 @@ These operations take place in accordance with the rules explained in [this guid
 
 ### License
 
-This project is licensed under the GPl 3 license.
+This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for details.
